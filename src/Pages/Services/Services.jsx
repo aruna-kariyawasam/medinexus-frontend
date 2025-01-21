@@ -4,6 +4,7 @@ import './Services.css'
 const Services = () => {
   return (
     <div className="Medinexus-services">
+      
     </div>
   )
 }
