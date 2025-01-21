@@ -1,0 +1,21 @@
+/* Default styles for nav links */
+.custom-nav-link {
+    color: black;
+    transition: all 0.3s ease;
+  }
+  
+  .custom-nav-link:hover {
+    background-color: #343a40;
+    color: white !important;
+    border-radius: 25px !important;
+  }
+  
+
+  .custom-nav-link.active-tab {
+    background-color: navy;
+    color: white !important;
+    border-radius: 25px !important;
+    padding: 15px !important;
+    transition: all 0.3s ease !important;
+  }
+  
