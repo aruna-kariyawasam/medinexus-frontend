@@ -1,0 +1,9 @@
+
+.box_bg{
+    max-width: 35%;
+    max-height: auto;
+}
+.img-boxs{
+    list-style: none;
+    display: inline
+}
