@@ -3,12 +3,10 @@ import { Modal, Button, Container } from "react-bootstrap"
 
 const TermsAndConditions = ({ show, handleClose }) => {
   return (
-    <Modal show={show} onHide={handleClose} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Terms and Conditions</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Container>
+    <>
+        <Container style={{ 
+          marginTop: 50
+         }}>
           <p>
             Welcome to our Pharmacist Registration Service! By using this
             service, you agree to comply with the following terms and
@@ -126,23 +124,12 @@ const TermsAndConditions = ({ show, handleClose }) => {
             If you have any questions or concerns about these terms and
             conditions, please contact us at:
             <br />
-            <strong>Email:</strong> support@pharmacist-registration.com
+            <strong>Email:</strong> support@medinexus.com
             <br />
             <strong>Phone:</strong> [Insert Phone Number]
           </p>
-
-          <p>
-            By clicking "Submit," you acknowledge that you have read,
-            understood, and agree to these terms and conditions.
-          </p>
         </Container>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    </>
   );
 };
 

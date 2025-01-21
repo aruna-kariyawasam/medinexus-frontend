@@ -187,7 +187,7 @@ const Register_nurse = () => {
               type="checkbox"
               label={
                 <>
-                  I agree to the <a href="#terms">Terms and Conditions</a> and certify the information provided is accurate.
+                  I agree to the <a target="_blank" href="/tc">Terms and Conditions</a> and certify the information provided is accurate.
                 </>
               }
             />
