@@ -1,4 +1,9 @@
-/* Default styles for nav links */
+.navbar-collapse {
+    display: flex ;
+    justify-content: flex-end ;
+    align-items: center;
+  }
+  
 .custom-nav-link {
     color: black;
     transition: all 0.3s ease;
@@ -8,14 +13,17 @@
     background-color: #343a40;
     color: white !important;
     border-radius: 25px !important;
-  }
+    transition: all 0.3s ease !important;
+    margin:0px 5px 0px 5x;
+    padding:0px 5px 0px 5x;
+}
   
 
   .custom-nav-link.active-tab {
     background-color: navy;
     color: white !important;
     border-radius: 25px !important;
-    padding: 15px !important;
+    padding: 10px !important;
     transition: all 0.3s ease !important;
   }
   
