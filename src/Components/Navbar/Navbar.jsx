@@ -6,10 +6,10 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { assets } from '../../assets/assets';
-import './Navbar.css'; // Custom styles for active tab
+import './Navbar.css'; 
 
 function NavScrollExample() {
-  const location = useLocation(); // Get the current URL path
+  const location = useLocation();
 
   return (
     <Navbar expand="lg" bg="light" className="bg-body-tertiary">
@@ -32,7 +32,7 @@ function NavScrollExample() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            {/* Dynamically apply 'active-tab' class */}
+           
             <Nav.Link
               as={Link}
               to="/"
