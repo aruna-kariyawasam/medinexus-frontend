@@ -13,23 +13,23 @@ const Login = () => {
     setSelectedIdentity(identity);
 
     switch (identity) {
-      case '1': // Admin
+      case '1':
         setEmailLabel('Email address');
         setEmailPlaceholder('Enter email');
         break;
-      case '2': // Doctor
+      case '2': 
         setEmailLabel('Doctor ID');
         setEmailPlaceholder('Enter Doctor ID');
         break;
-      case '3': // Nurse
+      case '3': 
         setEmailLabel('Nurse ID');
         setEmailPlaceholder('Enter Nurse ID');
         break;
-      case '4': // Pharmacist
+      case '4': 
         setEmailLabel('Pharmacist ID');
         setEmailPlaceholder('Enter Pharmacist ID');
         break;
-      case '5': // Patient
+      case '5':
         setEmailLabel('Patient ID');
         setEmailPlaceholder('Enter Patient ID');
         break;
