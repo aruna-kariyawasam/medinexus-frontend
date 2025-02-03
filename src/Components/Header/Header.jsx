@@ -1,48 +1,59 @@
-import React from 'react'
-import './Header.css'
-import { assets } from '../../assets/assets'
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
-import Row from 'react-bootstrap/Row';
-
+import React from 'react';
+import './Header.css';
+import { assets } from '../../assets/assets';
+import Carousel from 'react-bootstrap/Carousel';
+import ExampleCarouselImage from '../../components/ExampleCarouselImage'; // Ensure correct path
 
 const Header = () => {
   return (
-    <div>
-        <div className="header">
-            <video autoPlay loop muted className="header-video">
-                <source src={assets.home_bg_video} type="video/mp4" fluid/>
-            </video>
+    <div className="header">
+      <Carousel>
+        <Carousel.Item>
+          <ExampleCarouselImage 
+            imageUrl={assets.image_01} 
+            altText="First slide"
+          />
+          <Carousel.Caption className="carousel-caption">
+            <h3>Welcome to MediNexus</h3>
+            <p>Empowering healthcare connections for a healthier tomorrow.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
 
-            <div className="header-overlay">
-                <div className="header-content">
-                    <h1 className="wel-note">Welcome to MediNexus</h1>
-                    <p className="wel-pargraph">Empowering healthcare connections for a healthier tomorrow.</p>
-                </div>
-            </div>
-            
-            <div className="overlay-images">
-                <Container>
-                    <Row>
-                        <Col xs={6} md={3}>
-                        <Image src={assets.image_01} className="image-item" />
-                        </Col>
-                        <Col xs={6} md={3}>
-                        <Image src={assets.image_02} className="image-item" />
-                        </Col>
-                        <Col xs={6} md={3}>
-                        <Image src={assets.image_03} className="image-item" />
-                        </Col>
-                        <Col xs={6} md={3}>
-                        <Image src={assets.image_04} className="image-item" />
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-          </div>
+        <Carousel.Item>
+          <ExampleCarouselImage 
+            imageUrl={assets.image_02} 
+            altText="Second slide"
+          />
+          <Carousel.Caption className="carousel-caption">
+            <h3>Quality Care</h3>
+            <p>Providing the best healthcare services for all.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+
+        <Carousel.Item>
+          <ExampleCarouselImage 
+            imageUrl={assets.image_03} 
+            altText="Third slide"
+          />
+          <Carousel.Caption className="carousel-caption">
+            <h3>Innovative Solutions</h3>
+            <p>Transforming healthcare with cutting-edge technology.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+
+        <Carousel.Item>
+          <ExampleCarouselImage 
+            imageUrl={assets.image_04} 
+            altText="Fourth slide"
+          />
+          <Carousel.Caption className="carousel-caption">
+            <h3>Your Health, Our Priority</h3>
+            <p>Committed to delivering exceptional care and support.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
