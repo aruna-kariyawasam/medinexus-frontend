@@ -2,7 +2,7 @@ import React from 'react';
 import './Header.css';
 import { assets } from '../../assets/assets';
 import Carousel from 'react-bootstrap/Carousel';
-import ExampleCarouselImage from '../../components/ExampleCarouselImage'; // Ensure correct path
+import ExampleCarouselImage from '../../components/ExampleCarouselImage';
 
 const Header = () => {
   return (
