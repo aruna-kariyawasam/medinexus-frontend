@@ -7,3 +7,12 @@
     list-style: none;
     display: inline
 }
+.Medinexus-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .box_container {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
