@@ -46,10 +46,13 @@ const Login = () => {
       style={{
         justifyContent: 'center',
         alignItems: 'center', 
-        height: '100vh',
+        height: '140vh',
+        width:'100%',
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundImage: `url(${assets.login_page_main_bg})`
+        backgroundPosition:'',
+        backgroundImage: `url(${assets.login_page_main_bg})`,
+        backgroundAttachment:'scroll',
+        backgroundSize:'cover'
       }}
     >
       <div 
@@ -58,13 +61,13 @@ const Login = () => {
           display: 'flex',
           justifyContent: 'center', 
           alignItems: 'center',
-          height: '100%',
+          height: '100%'
         }}
       >
         <div 
           className="box_container"
           style={{ 
-            width: '33%',
+            width: '38%',
             maxHeight: 'auto',
             paddingTop: '20px',
             paddingBottom: '30px',
