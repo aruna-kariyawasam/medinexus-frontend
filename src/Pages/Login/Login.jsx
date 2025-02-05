@@ -3,6 +3,9 @@ import './Login.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { assets } from '../../assets/assets.js';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
 
 const Login = () => {
   const [selectedIdentity, setSelectedIdentity] = useState('');
@@ -49,10 +52,9 @@ const Login = () => {
         height: '140vh',
         width:'100%',
         backgroundSize: 'cover',
-        backgroundPosition:'',
+        backgroundPosition:'center',
         backgroundImage: `url(${assets.login_page_main_bg})`,
         backgroundAttachment:'scroll',
-        backgroundSize:'cover'
       }}
     >
       <div 
@@ -98,7 +100,7 @@ const Login = () => {
               zIndex: 1
             }}
           />
-
+          
           {/* Content Container */}
           <div 
             style={{
@@ -107,91 +109,104 @@ const Login = () => {
               borderRadius: '30px',
             }}
           >
-            <div className='d-flex justify-content-center'>
-              <h1 className="lgnhdr"
-              style={{ 
-                fontWeight:'bold',
-                fontSize:'48px'
-               }}>LOGIN</h1>
+            {/* <div className="sqrlogo">
+              <img
+                  src={assets.Square_logo}
+                  alt="Medinexus Logo"
+                  style={{
+                    maxWidth: "70%",
+                    height: "auto",
+                  }}
+              />
+            </div> */}
+
+            <div className="logincontent">
+              <div className='d-flex justify-content-center'>
+                <h1 className="lgnhdr"
+                style={{ 
+                  fontWeight:'bold',
+                  fontSize:'48px'
+                }}>LOGIN</h1>
+              </div>
+              <br/>
+              <Form.Label>Identity</Form.Label> 
+              <Form.Select 
+                aria-label="Default select example"  
+                style={{ border: '0.5px solid navy' }}
+                onChange={handleIdentityChange}
+                value={selectedIdentity}
+              >
+                <option value="1">Admin</option>
+                <option value="2">Doctor</option>
+                <option value="3">Nurse</option>
+                <option value="4">Pharmacist</option>
+                <option value="5">Patient</option>
+              </Form.Select>
+              <br/>
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>{emailLabel}</Form.Label>
+                  <Form.Control 
+                    type="email" 
+                    placeholder={emailPlaceholder} 
+                    style={{ border: '0.5px solid navy' }}
+                  />
+                  <Form.Text className="text-muted">
+                    We'll never share your email with anyone else.
+                  </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    placeholder="Password"  
+                    style={{ border: '0.5px solid navy' }}
+                  />
+                </Form.Group>
+
+                <div className="d-flex justify-content-center">
+                  <Button  
+                    variant="primary" 
+                    type="submit"
+                    style={{ 
+                      marginTop: '20px',
+                      backgroundColor: 'navy',
+                      width: '300px',
+                      height: 'auto',
+                      borderRadius: '25px',
+                      color: 'lightgray',
+                      fontSize:'20px',
+                      fontWeight:'bold',
+                      letterSpacing:'1.5px',
+                    }}
+                  >
+                    LOGIN
+                  </Button>
+                </div>
+                <div className="d-flex justify-content-center">
+                  <Button 
+                    href="/register" 
+                    variant="primary" 
+                    type="submit"
+                    style={{ 
+                      marginTop: '15px',
+                      backgroundColor: 'darkgreen',
+                      width: '300px',
+                      height: 'auto',
+                      borderRadius: '25px',
+                      color: 'lightgray',
+                      fontSize:'20px',
+                      fontWeight:'bold',
+                      letterSpacing:'1.5px',
+                    }}
+                  >
+                    REGISTER
+                  </Button>
+                </div>
+              </Form>
             </div>
-            <br/>
-            <Form.Label>Identity</Form.Label> 
-            <Form.Select 
-              aria-label="Default select example"  
-              style={{ border: '0.5px solid navy' }}
-              onChange={handleIdentityChange}
-              value={selectedIdentity}
-            >
-              <option value="1">Admin</option>
-              <option value="2">Doctor</option>
-              <option value="3">Nurse</option>
-              <option value="4">Pharmacist</option>
-              <option value="5">Patient</option>
-            </Form.Select>
-            <br/>
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>{emailLabel}</Form.Label>
-                <Form.Control 
-                  type="email" 
-                  placeholder={emailPlaceholder} 
-                  style={{ border: '0.5px solid navy' }}
-                />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control 
-                  type="password" 
-                  placeholder="Password"  
-                  style={{ border: '0.5px solid navy' }}
-                />
-              </Form.Group>
-
-              <div className="d-flex justify-content-center">
-                <Button  
-                  variant="primary" 
-                  type="submit"
-                  style={{ 
-                    marginTop: '20px',
-                    backgroundColor: 'navy',
-                    width: '300px',
-                    height: 'auto',
-                    borderRadius: '25px',
-                    color: 'lightgray',
-                    fontSize:'20px',
-                    fontWeight:'bold',
-                    letterSpacing:'1.5px',
-                  }}
-                >
-                  LOGIN
-                </Button>
-              </div>
-              <div className="d-flex justify-content-center">
-                <Button 
-                  href="/register" 
-                  variant="primary" 
-                  type="submit"
-                  style={{ 
-                    marginTop: '15px',
-                    backgroundColor: 'darkgreen',
-                    width: '300px',
-                    height: 'auto',
-                    borderRadius: '25px',
-                    color: 'lightgray',
-                    fontSize:'20px',
-                    fontWeight:'bold',
-                    letterSpacing:'1.5px',
-                  }}
-                >
-                  REGISTER
-                </Button>
-              </div>
-            </Form>
-          </div>
+            </div>
         </div>
       </div>
     </div>
