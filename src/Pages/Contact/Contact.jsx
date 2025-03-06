@@ -1,77 +1,203 @@
-import React, { useState } from 'react';
-import './Contact.css'
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { assets } from '../../assets/assets';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { 
+  Phone, 
+  Mail, 
+  MapPin,
+} from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2';
 
-const Contact = () => {
-  const [hoveredButton, setHoveredButton] = useState(null);
-  const navigate = useNavigate();
+const ContactForm = () => {
+  const form = useRef();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleRegisterClick = (href) => {
-    console.log('Navigating to:', href); 
-    navigate(href); 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
-  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    // EmailJS configuration
+    emailjs.sendForm(
+      'service_8ampg1z', 
+      'template_f82zhkn', 
+      form.current, 
+      'K91UPoVSi7SBhPsAF'
+    )
+    .then((result) => {
+      Swal.fire({
+        title: "Email Sent!",
+        text: "Thank you for your feedback! We will get back to you soon.",
+        icon: "success",
+        draggable: true
+      });
+      // console.log('Email sent successfully:', result.text);
+      // setSubmitStatus({ success: true, message: 'Thank you for your feedback! We will get back to you soon.' });
+      // Reset form after successful submission
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    })
+    .catch((error) => {
+      console.error('Email sending failed:', error);
+      setSubmitStatus({ success: false, message: 'Failed to send your message. Please try again later.' });
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
+  };
+
   return (
-    <div>
-      <Container className="my-4">
-        <Row className="g-4" 
-      style={{ 
-        marginTop:'100px'
-       }}>
-          {[
-            { id: 1, title: 'Contact an Admin', image: assets.contact_admin , href:'' },
-            // { id: 2, title: 'Contact a Doctor', image: assets.contact_doctor , href: ''},
-            // { id: 3, title: 'Contact a Pharmacist', image: assets.contact_pharmacist , href:'' },
-            // { id: 4, title: 'Contact a Nurse', image: assets.contact_nurse , href:''},
-          ].map((item) => (
-            <Col xs={12} sm={6} md={6} lg={3} key={item.id}>
-              <Card
-                className="text-center"
-                style={{ borderRadius: '25px', border: '0.25px solid navy' }}
-              >
-                <Card.Img
-                  variant="top"
-                  src={item.image}
-                  style={{ height: '15rem', objectFit: 'cover', borderRadius: '25px' }}
+    <div className="container-fluid vh-100">
+      <div className="row h-100">
+        {/* Left Column with Enhanced Icons */}
+        <div className="col-md-5 bg-light d-flex flex-column justify-content-center p-5">
+          <div className="text-center">
+            <h1 className="mb-4">Contact Us</h1>
+            <p>Have questions or need assistance? Our team is here to help!
+
+Whether you need to schedule an appointment, inquire about our services, or seek medical support, feel free to reach out to us.</p>
+            <div className="contact-details mt-5">
+              {/* Phone Contact */}
+              <div className="mb-3 d-flex align-items-center justify-content-left">
+                <Phone 
+                  color="#007bff" 
+                  size={24} 
+                  className="me-3" 
                 />
-                <Card.Body>
-                  <Card.Title>
-                    <h2 style={{ fontWeight: 'bold' }}>{item.title}</h2>
-                  </Card.Title>
-                  <Button
-                    variant="primary"
-                    className="custom-button mt-3"
-                    style={{
-                      backgroundColor: hoveredButton === item.id ? '#1642c7' : '#060d24',
-                      color: hoveredButton === item.id ? 'black' : '#aeb6d1',
-                      fontSize: '25px',
-                      fontWeight: '500',
-                      width: '200px',
-                      height: '55px',
-                      borderRadius: hoveredButton === item.id ? '25px' : '25px',
-                      transition: 'background-color 0.6s ease',
-                      border: hoveredButton === item.id ? '0.5px solid navy' : '0',
-                    }}
-                    onClick={() => handleRegisterClick(item.href)}
-                    onMouseEnter={() => setHoveredButton(item.id)}
-                    onMouseLeave={() => setHoveredButton(null)} 
-                  >
-                    Contact
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Container>
+                <h5 className="m-0">0915050981</h5>
+              </div>
+              
+              {/* Email Contact */}
+              <div className="mb-3 d-flex align-items-center justify-content-left">
+                <Mail 
+                  color="#28a745" 
+                  size={24} 
+                  className="me-3" 
+                />
+                <h5 className="m-0">medinexus.msms.0001@gmail.com</h5>
+              </div>
+              
+              {/* Address Contact */}
+              <div className="mb-3 d-flex align-items-center justify-content-left">
+                <MapPin 
+                  color="#dc3545" 
+                  size={24} 
+                  className="me-3" 
+                />
+                <h5 className="m-0">34 McCallum Rd, Colombo 01000</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (Form) */}
+        <div className="col-md-6 bg-light d-flex align-items-center justify-content-center p-8">
+          <div className="w-75">
+            {/* Success/Error Message */}
+            {submitStatus && (
+              <div className={`alert ${submitStatus.success ? 'alert-success' : 'alert-danger'} mb-4`} role="alert">
+                {submitStatus.message}
+              </div>
+            )}
+            
+            <form ref={form} onSubmit={handleSubmit}>
+              <div className="row mb-5">
+                <div className="col-md-6 mb-5 mb-md-0">
+                  <input 
+                    type="text" 
+                    className="form-control rounded-pill" 
+                    placeholder="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+                <div className="col-md-6">
+                  <input 
+                    type="text" 
+                    className="form-control rounded-pill" 
+                    placeholder="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-5">
+                <input 
+                  type="email" 
+                  className="form-control rounded-pill" 
+                  placeholder="example@email.com"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              
+              <div className="mb-5">
+                <input 
+                  type="tel" 
+                  className="form-control rounded-pill" 
+                  placeholder="Phone (optional)"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+              
+              <div className="mb-5">
+                <textarea 
+                  className="form-control" 
+                  rows="4" 
+                  placeholder="Type your message..."
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+              
+              <div>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary w-100 rounded-pill"
+                  style={{backgroundColor:'#060d24'}}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Submit'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
-export default Contact
+export default ContactForm;
