@@ -20,12 +20,15 @@ const Contact = () => {
   return (
     <div>
       <Container className="my-4">
-        <Row className="g-4">
+        <Row className="g-4" 
+      style={{ 
+        marginTop:'100px'
+       }}>
           {[
             { id: 1, title: 'Contact an Admin', image: assets.contact_admin , href:'' },
-            { id: 2, title: 'Contact a Doctor', image: assets.contact_doctor , href: ''},
-            { id: 3, title: 'Contact a Pharmacist', image: assets.contact_pharmacist , href:'' },
-            { id: 4, title: 'Contact a Nurse', image: assets.contact_nurse , href:''},
+            // { id: 2, title: 'Contact a Doctor', image: assets.contact_doctor , href: ''},
+            // { id: 3, title: 'Contact a Pharmacist', image: assets.contact_pharmacist , href:'' },
+            // { id: 4, title: 'Contact a Nurse', image: assets.contact_nurse , href:''},
           ].map((item) => (
             <Col xs={12} sm={6} md={6} lg={3} key={item.id}>
               <Card
