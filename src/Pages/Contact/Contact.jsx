@@ -6,6 +6,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2';
 
 const ContactForm = () => {
   const form = useRef();
@@ -40,8 +41,14 @@ const ContactForm = () => {
       'K91UPoVSi7SBhPsAF'
     )
     .then((result) => {
-      console.log('Email sent successfully:', result.text);
-      setSubmitStatus({ success: true, message: 'Thank you for your feedback! We will get back to you soon.' });
+      Swal.fire({
+        title: "Email Sent!",
+        text: "Thank you for your feedback! We will get back to you soon.",
+        icon: "success",
+        draggable: true
+      });
+      // console.log('Email sent successfully:', result.text);
+      // setSubmitStatus({ success: true, message: 'Thank you for your feedback! We will get back to you soon.' });
       // Reset form after successful submission
       setFormData({
         firstName: '',
