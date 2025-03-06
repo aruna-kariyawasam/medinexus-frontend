@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { 
   Phone, 
   Mail, 
-  MapPin,  // From lucide-react for more detailed icons
+  MapPin,
 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const ContactForm = () => {
+  const form = useRef();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -14,6 +16,8 @@ const ContactForm = () => {
     phone: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +29,35 @@ const ContactForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    
+    // EmailJS configuration
+    emailjs.sendForm(
+      'service_8ampg1z', 
+      'template_f82zhkn', 
+      form.current, 
+      'K91UPoVSi7SBhPsAF'
+    )
+    .then((result) => {
+      console.log('Email sent successfully:', result.text);
+      setSubmitStatus({ success: true, message: 'Thank you for your feedback! We will get back to you soon.' });
+      // Reset form after successful submission
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    })
+    .catch((error) => {
+      console.error('Email sending failed:', error);
+      setSubmitStatus({ success: false, message: 'Failed to send your message. Please try again later.' });
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
   };
 
   return (
@@ -72,11 +104,17 @@ Whether you need to schedule an appointment, inquire about our services, or seek
           </div>
         </div>
 
-        {/* Right Column (Form remains the same) */}
-        <div className="col-md-6  bg-light d-flex align-items-center justify-content-center p-8">
+        {/* Right Column (Form) */}
+        <div className="col-md-6 bg-light d-flex align-items-center justify-content-center p-8">
           <div className="w-75">
-            <form onSubmit={handleSubmit}>
-              {/* Form inputs remain unchanged */}
+            {/* Success/Error Message */}
+            {submitStatus && (
+              <div className={`alert ${submitStatus.success ? 'alert-success' : 'alert-danger'} mb-4`} role="alert">
+                {submitStatus.message}
+              </div>
+            )}
+            
+            <form ref={form} onSubmit={handleSubmit}>
               <div className="row mb-5">
                 <div className="col-md-6 mb-5 mb-md-0">
                   <input 
@@ -102,7 +140,6 @@ Whether you need to schedule an appointment, inquire about our services, or seek
                 </div>
               </div>
               
-              {/* Rest of the form remains the same */}
               <div className="mb-5">
                 <input 
                   type="email" 
@@ -143,8 +180,9 @@ Whether you need to schedule an appointment, inquire about our services, or seek
                   type="submit" 
                   className="btn btn-primary w-100 rounded-pill"
                   style={{backgroundColor:'#060d24'}}
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? 'Sending...' : 'Submit'}
                 </button>
               </div>
             </form>
