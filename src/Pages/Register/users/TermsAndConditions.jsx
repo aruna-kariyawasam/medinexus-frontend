@@ -124,9 +124,7 @@ const TermsAndConditions = ({ show, handleClose }) => {
             If you have any questions or concerns about these terms and
             conditions, please contact us at:
             <br />
-            <strong>Email:</strong> support@medinexus.com
-            <br />
-            <strong>Phone:</strong> [Insert Phone Number]
+            <strong>Email:</strong> medinexus.msms.0001@gmail.com
           </p>
         </Container>
     </>

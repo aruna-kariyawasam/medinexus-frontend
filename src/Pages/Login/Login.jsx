@@ -3,9 +3,6 @@ import './Login.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { assets } from '../../assets/assets.js';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-
 
 const Login = () => {
   const [selectedIdentity, setSelectedIdentity] = useState('');
@@ -40,6 +37,21 @@ const Login = () => {
       default:
         setEmailLabel('Email address');
         setEmailPlaceholder('Enter email');
+    }
+  };
+
+  const getRegistrationRoute = () => {
+    switch (selectedIdentity) {
+      case '2':
+        return '/docRegi';
+      case '3':
+        return '/nurRegi';
+      case '4':
+        return '/pharmRegi';
+      case '5':
+        return '/patRegi';
+      default:
+        return null;
     }
   };
 
@@ -109,17 +121,6 @@ const Login = () => {
               borderRadius: '30px',
             }}
           >
-            {/* <div className="sqrlogo">
-              <img
-                  src={assets.Square_logo}
-                  alt="Medinexus Logo"
-                  style={{
-                    maxWidth: "70%",
-                    height: "auto",
-                  }}
-              />
-            </div> */}
-
             <div className="logincontent">
               <div className='d-flex justify-content-center'>
                 <h1 className="lgnhdr"
@@ -131,11 +132,13 @@ const Login = () => {
               <br/>
               <Form.Label>Identity</Form.Label> 
               <Form.Select 
-                aria-label="Default select example"  
+                aria-label="Select identity"  
                 style={{ border: '0.5px solid navy' }}
                 onChange={handleIdentityChange}
                 value={selectedIdentity}
+                required
               >
+                <option value="">Select your role</option>
                 <option value="1">Admin</option>
                 <option value="2">Doctor</option>
                 <option value="3">Nurse</option>
@@ -150,6 +153,7 @@ const Login = () => {
                     type="email" 
                     placeholder={emailPlaceholder} 
                     style={{ border: '0.5px solid navy' }}
+                    required
                   />
                   <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
@@ -162,6 +166,7 @@ const Login = () => {
                     type="password" 
                     placeholder="Password"  
                     style={{ border: '0.5px solid navy' }}
+                    required
                   />
                 </Form.Group>
 
@@ -186,9 +191,8 @@ const Login = () => {
                 </div>
                 <div className="d-flex justify-content-center">
                   <Button 
-                    href="/register" 
+                    href={getRegistrationRoute()}
                     variant="primary" 
-                    type="submit"
                     style={{ 
                       marginTop: '15px',
                       backgroundColor: 'darkgreen',
@@ -200,6 +204,7 @@ const Login = () => {
                       fontWeight:'bold',
                       letterSpacing:'1.5px',
                     }}
+                    disabled={!getRegistrationRoute()}
                   >
                     REGISTER
                   </Button>
