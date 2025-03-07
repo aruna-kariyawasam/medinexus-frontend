@@ -2,52 +2,169 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faHome, faUser, faUserMd, faPills, 
-  faCalendarCheck, faSignOutAlt, faNotesMedical, 
-  faUserInjured, faProcedures, faHeartbeat, 
-  faClipboardList, faStethoscope, faPhoneAlt,
-  faChartLine, faEdit, faPlus, faTimes, faCheck
-} from '@fortawesome/free-solid-svg-icons';
-
+    faHome, faUser, faUserMd, faPills, 
+    faCalendarCheck, faSignOutAlt, faNotesMedical, 
+    faUserInjured, faProcedures, faHeartbeat, 
+    faClipboardList, faStethoscope, faPhoneAlt,
+    faChartLine, faEdit, faPlus, faTimes, faCheck,
+    faUserCircle
+  } from '@fortawesome/free-solid-svg-icons';
 const NurseDashboard = () => {
-  // Active menu state
   const [activeMenu, setActiveMenu] = useState('Dashboard');
 
-  // Sample data for nurse dashboard
+  // Sri Lankan context data
   const [nurseData, setNurseData] = useState({
     nurseInfo: {
-      name: 'Sarah Johnson',
-      id: 'N-2023-456',
+      name: 'Nayana Perera',
+      id: 'SLN-2023-456',
       department: 'General Medicine',
       shift: 'Morning (7AM - 3PM)',
-      supervisor: 'Dr. Williams'
+      supervisor: 'Dr. Rajapakse',
+      hospital: 'National Hospital of Sri Lanka'
     },
     patientVitals: [
-      { id: 'P-1001', name: 'John Smith', room: '201-A', bp: '130/85', temp: '98.6°F', pulse: '78 bpm', respRate: '16/min', o2Sat: '97%', lastChecked: '8:30 AM', status: 'Stable' },
-      { id: 'P-1002', name: 'Mary Johnson', room: '203-B', bp: '142/90', temp: '99.2°F', pulse: '88 bpm', respRate: '18/min', o2Sat: '95%', lastChecked: '8:45 AM', status: 'Needs Attention' },
-      { id: 'P-1003', name: 'Robert Davis', room: '205-A', bp: '118/75', temp: '98.4°F', pulse: '72 bpm', respRate: '15/min', o2Sat: '98%', lastChecked: '9:15 AM', status: 'Stable' },
-      { id: 'P-1004', name: 'Patricia Wilson', room: '208-B', bp: '160/95', temp: '100.1°F', pulse: '92 bpm', respRate: '20/min', o2Sat: '93%', lastChecked: '9:30 AM', status: 'Critical' }
+      { 
+        id: 'P-1001', 
+        name: 'Sandaruwan Silva', 
+        age: 58,
+        nic: '651234567V',
+        room: 'Ward A-201', 
+        bp: '130/85', 
+        temp: '98.6°F', 
+        pulse: '78 bpm', 
+        respRate: '16/min', 
+        o2Sat: '97%', 
+        lastChecked: '8:30 AM', 
+        status: 'Stable',
+        diagnosis: 'Diabetes Management'
+      },
+      { 
+        id: 'P-1002', 
+        name: 'Kamala Herath', 
+        age: 65,
+        nic: '551234567V',
+        room: 'Ward B-203', 
+        bp: '142/90', 
+        temp: '99.2°F', 
+        pulse: '88 bpm', 
+        respRate: '18/min', 
+        o2Sat: '95%', 
+        lastChecked: '8:45 AM', 
+        status: 'Needs Attention',
+        diagnosis: 'Hypertension'
+      },
+      { 
+        id: 'P-1003', 
+        name: 'Priyantha Fernando', 
+        age: 42,
+        nic: '801234567V',
+        room: 'Ward C-205', 
+        bp: '118/75', 
+        temp: '98.4°F', 
+        pulse: '72 bpm', 
+        respRate: '15/min', 
+        o2Sat: '98%', 
+        lastChecked: '9:15 AM', 
+        status: 'Stable',
+        diagnosis: 'Post-Operative Care'
+      },
+      { 
+        id: 'P-1004', 
+        name: 'Nirmala Ratnayake', 
+        age: 72,
+        nic: '481234567V',
+        room: 'ICU-208', 
+        bp: '160/95', 
+        temp: '100.1°F', 
+        pulse: '92 bpm', 
+        respRate: '20/min', 
+        o2Sat: '93%', 
+        lastChecked: '9:30 AM', 
+        status: 'Critical',
+        diagnosis: 'Pneumonia'
+      }
     ],
     medicationSchedule: [
-      { patient: 'John Smith', room: '201-A', medication: 'Atorvastatin 20mg', time: '10:00 AM', status: 'Pending' },
-      { patient: 'Mary Johnson', room: '203-B', medication: 'Metformin 500mg', time: '10:00 AM', status: 'Pending' },
-      { patient: 'Robert Davis', room: '205-A', medication: 'Lisinopril 10mg', time: '10:00 AM', status: 'Pending' },
-      { patient: 'Patricia Wilson', room: '208-B', medication: 'Furosemide 40mg', time: '10:00 AM', status: 'Pending' },
-      { patient: 'John Smith', room: '201-A', medication: 'Metoprolol 25mg', time: '2:00 PM', status: 'Pending' },
-      { patient: 'Mary Johnson', room: '203-B', medication: 'Amlodipine 5mg', time: '2:00 PM', status: 'Pending' }
+      { 
+        patient: 'Sandaruwan Silva', 
+        room: 'Ward A-201', 
+        medication: 'Atorvastatin 20mg (Zivast)', 
+        time: '10:00 AM', 
+        status: 'Pending' 
+      },
+      { 
+        patient: 'Kamala Herath', 
+        room: 'Ward B-203', 
+        medication: 'Metformin 500mg (Glycomet)', 
+        time: '10:00 AM', 
+        status: 'Pending' 
+      },
+      { 
+        patient: 'Priyantha Fernando', 
+        room: 'Ward C-205', 
+        medication: 'Lisinopril 10mg (Zestril)', 
+        time: '10:00 AM', 
+        status: 'Pending' 
+      },
+      { 
+        patient: 'Nirmala Ratnayake', 
+        room: 'ICU-208', 
+        medication: 'Furosemide 40mg (Lasix)', 
+        time: '10:00 AM', 
+        status: 'Pending' 
+      }
     ],
     appointments: [
-      { time: '11:00 AM', doctor: 'Dr. Roberts', patient: 'John Smith', type: 'Post-Op Check', room: 'Exam 2' },
-      { time: '11:30 AM', doctor: 'Dr. Williams', patient: 'Mary Johnson', type: 'Blood Pressure Follow-up', room: 'Exam 1' },
-      { time: '1:15 PM', doctor: 'Dr. Chen', patient: 'Patricia Wilson', type: 'Fever Evaluation', room: 'Exam 3' }
+      { 
+        time: '11:00 AM', 
+        doctor: 'Dr. Wijesinghe', 
+        patient: 'Sandaruwan Silva', 
+        type: 'Post-Op Check', 
+        room: 'Exam 2' 
+      },
+      { 
+        time: '11:30 AM', 
+        doctor: 'Dr. Jayawardena', 
+        patient: 'Kamala Herath', 
+        type: 'Blood Pressure Follow-up', 
+        room: 'Exam 1' 
+      },
+      { 
+        time: '1:15 PM', 
+        doctor: 'Dr. Subramaniam', 
+        patient: 'Nirmala Ratnayake', 
+        type: 'Fever Evaluation', 
+        room: 'Exam 3' 
+      }
     ],
     tasks: [
-      { id: 1, description: 'Change IV for Patricia Wilson in Room 208-B', priority: 'High', completed: false },
-      { id: 2, description: 'Collect blood samples for lab work from Room 201-A and 205-A', priority: 'Medium', completed: false },
-      { id: 3, description: 'Document patient education for new diabetic medications', priority: 'Medium', completed: false },
-      { id: 4, description: 'Restock supply cart for afternoon shift', priority: 'Low', completed: true }
+      { 
+        id: 1, 
+        description: 'Change IV for Nirmala Ratnayake in ICU-208', 
+        priority: 'High', 
+        completed: false 
+      },
+      { 
+        id: 2, 
+        description: 'Collect blood samples for dengue NS1 antigen test', 
+        priority: 'Medium', 
+        completed: false 
+      },
+      { 
+        id: 3, 
+        description: 'Document patient education for diabetes management', 
+        priority: 'Medium', 
+        completed: false 
+      },
+      { 
+        id: 4, 
+        description: 'Restock leptospirosis treatment kits', 
+        priority: 'Low', 
+        completed: true 
+      }
     ]
   });
+
 
   // Handle medication status change
   const handleMedicationStatus = (index, status) => {
@@ -59,7 +176,6 @@ const NurseDashboard = () => {
     });
   };
 
-  // Handle task completion toggle
   const handleTaskCompletion = (taskId) => {
     const updatedTasks = nurseData.tasks.map(task => 
       task.id === taskId ? { ...task, completed: !task.completed } : task
@@ -70,7 +186,6 @@ const NurseDashboard = () => {
     });
   };
 
-  // Menu items
   const menuItems = [
     { name: 'Dashboard', icon: faHome },
     { name: 'Profile', icon: faUser },
@@ -82,116 +197,119 @@ const NurseDashboard = () => {
   ];
 
   return (
-    <div className="container-fluid">
-      <div className="row">
+    <div className="container-fluid p-0">
+      <div className="row g-0">
         {/* Sidebar */}
-        <div className="col-md-2 d-flex flex-column bg-white shadow-sm p-0" style={{ minHeight: '100vh' }}>
-          <div className="text-center p-4 border-bottom">
-            <div className="rounded-circle bg-primary d-inline-flex justify-content-center align-items-center" style={{ width: '60px', height: '60px' }}>
-              <FontAwesomeIcon icon={faStethoscope} size="2x" className="text-white" />
-            </div>
-            <div className="mt-2 fw-bold">Nurse Portal</div>
-          </div>
-          
-          <div className="d-flex flex-column flex-grow-1">
-            {menuItems.map((item, index) => (
-              <div 
-                key={index}
-                className={`d-flex align-items-center p-3 ${activeMenu === item.name ? 'bg-light border-start border-primary border-3' : ''}`}
-                style={{ cursor: 'pointer' }}
-                onClick={() => setActiveMenu(item.name)}
-              >
-                <FontAwesomeIcon 
-                  icon={item.icon} 
-                  className={`me-3 ${activeMenu === item.name ? 'text-primary' : 'text-secondary'}`} 
-                />
-                <span className={activeMenu === item.name ? 'text-primary fw-medium' : 'text-dark'}>
-                  {item.name}
-                </span>
+        <div className="col-md-2 bg-dark text-white" style={{ minHeight: '100vh', overflow: 'auto' }}>
+          <div className="d-flex flex-column">
+            <div className="text-center p-4 border-bottom border-secondary">
+              <div className="rounded-circle bg-primary mx-auto d-flex justify-content-center align-items-center" 
+                   style={{ width: '70px', height: '70px' }}>
+                <FontAwesomeIcon icon={faStethoscope} size="2x" className="text-white" />
               </div>
-            ))}
-            <div className="mt-auto"></div>
+              <div className="mt-3 fw-bold">Nurse Portal</div>
+              <div className="small text-light">ID: {nurseData.nurseInfo.id}</div>
+            </div>
+
+            <nav className="py-2">
+              {menuItems.map((item, index) => (
+                <div key={index} 
+                     className={`d-flex align-items-center p-3 ${activeMenu === item.name ? 'bg-primary' : ''}`}
+                     style={{ cursor: 'pointer' }}
+                     onClick={() => setActiveMenu(item.name)}>
+                  <FontAwesomeIcon icon={item.icon} className="me-3" />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </nav>
+
+            <div className="p-3 border-top border-secondary mt-auto">
+              <div className="d-flex align-items-center">
+                <FontAwesomeIcon icon={faPhoneAlt} className="me-3" />
+                <div className="small">
+                  <div>Emergency:</div>
+                  <div className="fw-bold">0112-123456</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        
+
         {/* Main Content */}
-        <div className="col-md-10 bg-light p-0">
+        <div className="col-md-10 bg-light">
           {/* Header */}
-          <div className="bg-dark text-white d-flex justify-content-between align-items-center p-3">
-            <div className="d-flex align-items-center">
-              <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center me-2" style={{ width: '40px', height: '40px' }}>
-                <FontAwesomeIcon icon={faUser} />
-              </div>
-              <div>
-                <div className="fw-bold">{nurseData.nurseInfo.name}</div>
-                <div className="small">ID: {nurseData.nurseInfo.id} | {nurseData.nurseInfo.department}</div>
+          <div className="bg-white shadow-sm p-3 d-flex justify-content-between align-items-center">
+            <h4 className="m-0">National Hospital Nursing Dashboard</h4>
+            <div className="d-flex align-items-center gap-3">
+              <div className="d-flex align-items-center gap-2">
+                <FontAwesomeIcon icon={faUserCircle} size="lg" />
+                <span>{nurseData.nurseInfo.name}</span>
               </div>
             </div>
-            <button className="btn btn-primary">
-              <FontAwesomeIcon icon={faPhoneAlt} className="me-2" />
-              Emergency Contact
-            </button>
           </div>
-          
+
           {/* Dashboard Content */}
           <div className="p-4">
-            {/* Quick Stats Row */}
-            <div className="row mb-4">
+            {/* Quick Stats */}
+            <div className="row mb-4 g-3">
               <div className="col-md-3">
                 <div className="card bg-primary text-white">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="card-title">Assigned Patients</h6>
-                      <h2 className="mb-0">{nurseData.patientVitals.length}</h2>
+                      <div className="small">Assigned Patients</div>
+                      <div className="fs-4">{nurseData.patientVitals.length}</div>
                     </div>
                     <FontAwesomeIcon icon={faUserInjured} size="2x" />
                   </div>
                 </div>
               </div>
+              
               <div className="col-md-3">
                 <div className="card bg-warning text-dark">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="card-title">Medications Due</h6>
-                      <h2 className="mb-0">{nurseData.medicationSchedule.filter(med => med.status === 'Pending').length}</h2>
+                      <div className="small">Medications Due</div>
+                      <div className="fs-4">{nurseData.medicationSchedule.filter(med => med.status === 'Pending').length}</div>
                     </div>
                     <FontAwesomeIcon icon={faPills} size="2x" />
                   </div>
                 </div>
               </div>
+
               <div className="col-md-3">
                 <div className="card bg-success text-white">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="card-title">Appointments Today</h6>
-                      <h2 className="mb-0">{nurseData.appointments.length}</h2>
+                      <div className="small">Appointments</div>
+                      <div className="fs-4">{nurseData.appointments.length}</div>
                     </div>
                     <FontAwesomeIcon icon={faCalendarCheck} size="2x" />
                   </div>
                 </div>
               </div>
+
               <div className="col-md-3">
                 <div className="card bg-danger text-white">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 className="card-title">Critical Patients</h6>
-                      <h2 className="mb-0">{nurseData.patientVitals.filter(patient => patient.status === 'Critical').length}</h2>
+                      <div className="small">Critical Patients</div>
+                      <div className="fs-4">{nurseData.patientVitals.filter(patient => patient.status === 'Critical').length}</div>
                     </div>
                     <FontAwesomeIcon icon={faHeartbeat} size="2x" />
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {/* Patient Vitals Card */}
             <div className="card shadow-sm mb-4">
               <div className="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">
+                <h5 className="m-0">
                   <FontAwesomeIcon icon={faHeartbeat} className="text-primary me-2" />
                   Patient Vitals
                 </h5>
                 <button className="btn btn-sm btn-outline-primary">
-                  <FontAwesomeIcon icon={faEdit} className="me-1" />
+                  <FontAwesomeIcon icon={faEdit} className="me-2" />
                   Update Vitals
                 </button>
               </div>
@@ -238,22 +356,20 @@ const NurseDashboard = () => {
                 </div>
               </div>
             </div>
-            
+
+            {/* Medication & Tasks Row */}
             <div className="row mb-4">
-              {/* Medication Schedule Card */}
-              <div className="col-md-7">
+              <div className="col-md-7 mb-4">
                 <div className="card shadow-sm h-100">
                   <div className="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">
+                    <h5 className="m-0">
                       <FontAwesomeIcon icon={faPills} className="text-primary me-2" />
                       Medication Schedule
                     </h5>
-                    <div>
-                      <button className="btn btn-sm btn-outline-primary me-2">
-                        <FontAwesomeIcon icon={faChartLine} className="me-1" />
-                        View All
-                      </button>
-                    </div>
+                    <button className="btn btn-sm btn-outline-primary">
+                      <FontAwesomeIcon icon={faChartLine} className="me-2" />
+                      View All
+                    </button>
                   </div>
                   <div className="card-body p-0">
                     <div className="table-responsive">
@@ -286,9 +402,9 @@ const NurseDashboard = () => {
                               </td>
                               <td>
                                 {med.status === 'Pending' && (
-                                  <>
+                                  <div className="btn-group">
                                     <button 
-                                      className="btn btn-sm btn-success me-1" 
+                                      className="btn btn-sm btn-success" 
                                       onClick={() => handleMedicationStatus(index, 'Administered')}
                                     >
                                       <FontAwesomeIcon icon={faCheck} />
@@ -299,7 +415,7 @@ const NurseDashboard = () => {
                                     >
                                       <FontAwesomeIcon icon={faTimes} />
                                     </button>
-                                  </>
+                                  </div>
                                 )}
                               </td>
                             </tr>
@@ -310,17 +426,16 @@ const NurseDashboard = () => {
                   </div>
                 </div>
               </div>
-              
-              {/* Task List Card */}
-              <div className="col-md-5">
+
+              <div className="col-md-5 mb-4">
                 <div className="card shadow-sm h-100">
                   <div className="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">
+                    <h5 className="m-0">
                       <FontAwesomeIcon icon={faClipboardList} className="text-primary me-2" />
                       Task List
                     </h5>
                     <button className="btn btn-sm btn-outline-primary">
-                      <FontAwesomeIcon icon={faPlus} className="me-1" />
+                      <FontAwesomeIcon icon={faPlus} className="me-2" />
                       Add Task
                     </button>
                   </div>
@@ -332,14 +447,10 @@ const NurseDashboard = () => {
                             <input 
                               className="form-check-input" 
                               type="checkbox" 
-                              id={`task-${task.id}`} 
                               checked={task.completed}
                               onChange={() => handleTaskCompletion(task.id)}
                             />
-                            <label 
-                              className={`form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}`} 
-                              htmlFor={`task-${task.id}`}
-                            >
+                            <label className={`form-check-label ${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
                               {task.description}
                             </label>
                           </div>
@@ -357,16 +468,16 @@ const NurseDashboard = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Appointments Card */}
             <div className="card shadow-sm mb-4">
               <div className="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">
+                <h5 className="m-0">
                   <FontAwesomeIcon icon={faCalendarCheck} className="text-primary me-2" />
                   Today's Appointments
                 </h5>
                 <button className="btn btn-sm btn-outline-primary">
-                  <FontAwesomeIcon icon={faChartLine} className="me-1" />
+                  <FontAwesomeIcon icon={faChartLine} className="me-2" />
                   View Schedule
                 </button>
               </div>
