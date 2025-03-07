@@ -12,10 +12,15 @@ import Register_nurse from './Pages/Register/users/Register_nurse'
 import Register_patient from './Pages/Register/users/Register_patient'
 import Nursing from './Pages/Nursing/Nursing'
 import TermsAndConditions from './Pages/Register/users/TermsandConditions'
+
+import Appointment_Doc from './Pages/Appointment/Appointment_Doc'
+
+
 import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
 import PatAfterLogin from './PatientDashboard/PatAfterLogin'
 import NurseAfterLogin from './NurseDashboard/NurseAfterLogin'
 import DoctorList from './DoctorDashboard/DoctorList'
+
 
 const App = () => {
   const location = useLocation();
@@ -45,10 +50,16 @@ const App = () => {
         <Route path='/nurRegi' element={<Register_nurse/>}/>
         <Route path='/patRegi' element={<Register_patient/>}/>
         <Route path='/tc' element={<TermsAndConditions/>}/>
+
+        <Route path='/appointment' element={<Appointment_Doc/>}/>
+        
+
+
         <Route path='/docafterlogin' element={<DocAfterLogin/>}/>
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
         <Route path='/doclist' element={<DoctorList/>}/>
+
       </Routes> 
     </div>
   )
