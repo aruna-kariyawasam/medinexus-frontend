@@ -16,6 +16,8 @@ import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
 import PatAfterLogin from './PatientDashboard/PatAfterLogin'
 import NurseAfterLogin from './NurseDashboard/NurseAfterLogin'
 import DoctorList from './DoctorDashboard/DoctorList'
+import PaymentGateway from './Pages/Payment_gateway'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
   const location = useLocation();
@@ -24,7 +26,8 @@ const App = () => {
     '/docafterlogin',
     '/patafterlogin',
     '/nurafterlogin',
-    '/doclist'
+    '/doclist',
+    '/payment'
   ];
   
   const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
@@ -49,6 +52,7 @@ const App = () => {
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
         <Route path='/doclist' element={<DoctorList/>}/>
+        <Route path='/payment' element={<PaymentGateway/>}/>
       </Routes> 
     </div>
   )
