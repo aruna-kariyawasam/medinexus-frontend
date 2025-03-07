@@ -113,6 +113,7 @@ const MedicalDashboard = () => {
       const year = date.getFullYear();
       const month = date.getMonth();
       
+      
       // First day of the month
       const firstDay = new Date(year, month, 1);
       // Last day of the month
