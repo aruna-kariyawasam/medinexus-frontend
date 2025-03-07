@@ -1,0 +1,47 @@
+.testimonial-carousel .carousel-indicators button {
+    background-color: #001233;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 8px;
+  }
+  
+  .testimonial-carousel .carousel-indicators .active {
+    background-color: #06182b;
+  }
+  
+  .submit-review-btn {
+    background-color: #0466c8;
+    border-color: #0466c8;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .submit-review-btn:hover {
+    background-color: #0353a4;
+    border-color: #0353a4;
+  }
+  
+  .language-btn {
+    flex: 1;
+    background-color: #002855;
+    border-color: #0466c8;
+    color: #b7cadd;
+    transition: all 0.3s ease;
+  }
+  
+  .language-btn:hover {
+    background-color: #010911;
+    color: white;
+  }
+  
+  .btn-check:checked + .language-btn,
+  .btn.active {
+    background-color: #0466c8 !important;
+    border-color: #0466c8 !important;
+    color: white !important;
+  }
+  
+  .text-teal {
+    color: #06d6a0;
+  }
