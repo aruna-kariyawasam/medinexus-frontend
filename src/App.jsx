@@ -50,11 +50,7 @@ const App = () => {
         <Route path='/nurRegi' element={<Register_nurse/>}/>
         <Route path='/patRegi' element={<Register_patient/>}/>
         <Route path='/tc' element={<TermsAndConditions/>}/>
-
         <Route path='/appointment' element={<Appointment_Doc/>}/>
-        
-
-
         <Route path='/docafterlogin' element={<DocAfterLogin/>}/>
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>

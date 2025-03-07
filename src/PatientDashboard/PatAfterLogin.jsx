@@ -9,6 +9,7 @@ import {
   faStethoscope, faAddressBook, faLock, faLanguage, faUnlockAlt,
   faUserFriends, faTimes
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const PatientDashboard = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -224,7 +225,9 @@ const PatientDashboard = () => {
                 <div className="card bg-primary text-white">
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <div>
-                      <div className="small">{t('Appointments')}</div>
+                    <div className="small">
+                    <Link to='/appointment'>{t('Appointments')}</Link>
+                    </div>
                       <div className="fs-4">{patientData.appointments.length}</div>
                     </div>
                     <FontAwesomeIcon icon={faCalendarAlt} size="2x" />

@@ -68,7 +68,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="container-fluid vh-100">
+    <div className="container-fluid vh-100" style={{ marginTop:'100px' }}>
       <div className="row h-100">
         {/* Left Column with Enhanced Icons */}
         <div className="col-md-5 bg-light d-flex flex-column justify-content-center p-5">
