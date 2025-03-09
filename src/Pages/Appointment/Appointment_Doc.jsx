@@ -38,11 +38,8 @@ function HealthcareAppointmentSystem() {
       { id: 6, name: 'Nurse Kumari Perera', type: 'nurse', specialty: 'General Care' },
       { id: 7, name: 'Nurse Sanduni Silva', type: 'nurse', specialty: 'Pediatric Care' },
       { id: 8, name: 'Nurse Raveen Fernando', type: 'nurse', specialty: 'Wound Care' },
-      { id: 9, name: 'Nurse Dinithi Gamage', type: 'nurse', specialty: 'Diabetic Care' },
-      // Pharmacists
-      { id: 10, name: 'Pharm. Chamara Gunawardana', type: 'pharmacist', specialty: 'Medication Review' },
-      { id: 11, name: 'Pharm. Tharushi Mendis', type: 'pharmacist', specialty: 'Vaccination' },
-      { id: 12, name: 'Pharm. Nuwan Jayasinghe', type: 'pharmacist', specialty: 'Chronic Disease Management' }
+      { id: 9, name: 'Nurse Dinithi Gamage', type: 'nurse', specialty: 'Diabetic Care' }
+      // Removed all pharmacist entries
     ];
     setPractitioners(mockPractitioners);
 
@@ -67,10 +64,8 @@ function HealthcareAppointmentSystem() {
         if (practitioner.type === 'nurse') {
           startHour = 7; // Nurses start earlier
           endHour = 17; // Nurses end later
-        } else if (practitioner.type === 'pharmacist') {
-          startHour = 9; // Pharmacists start later
-          endHour = 18; // Pharmacists end later
         }
+        // Removed pharmacist condition
       }
       
       // Generate time slots
@@ -181,6 +176,13 @@ function HealthcareAppointmentSystem() {
     
     // Switch to view tab after successful scheduling
     setActiveTab('view');
+  };
+
+  // Clear form handler
+  const handleClearForm = () => {
+    resetForm();
+    setSuccessMessage('');
+    setErrorMessage('');
   };
 
   // Capitalize first letter helper
@@ -328,19 +330,7 @@ function HealthcareAppointmentSystem() {
                           Nurse
                         </label>
                       </div>
-                      <div className="form-check">
-                        <input 
-                          className="form-check-input" 
-                          type="radio" 
-                          name="practitionerType" 
-                          id="pharmacistType"
-                          checked={practitionerTypeFilter === 'pharmacist'}
-                          onChange={() => setPractitionerTypeFilter('pharmacist')}
-                        />
-                        <label className="form-check-label" htmlFor="pharmacistType">
-                          Pharmacist
-                        </label>
-                      </div>
+                      {/* Removed pharmacist radio button */}
                     </div>
                   </div>
                   
@@ -439,22 +429,17 @@ function HealthcareAppointmentSystem() {
                       placeholder="For appointment reminders (optional)"
                     />
                   </div>
-                  
-                  <div className="mb-3">
-                    <label htmlFor="medical-issue" className="form-label">Reason for Visit</label>
-                    <textarea 
-                      className="form-control" 
-                      id="medical-issue" 
-                      rows="3"
-                      value={medicalIssue}
-                      onChange={(e) => setMedicalIssue(e.target.value)}
-                      placeholder="Briefly describe your symptoms or reason for visit"
-                    ></textarea>
-                  </div>
-                  
+                   
                   <div className="d-flex gap-2">
                     <button type="submit" className="btn btn-primary">
                       {editingAppointment ? 'Update Appointment' : 'Confirm Appointment'}
+                    </button>
+                    <button 
+                      type="button" 
+                      className="btn btn-secondary"
+                      onClick={handleClearForm}
+                    >
+                      Clear Form
                     </button>
                     {editingAppointment && (
                       <button 
@@ -490,9 +475,7 @@ function HealthcareAppointmentSystem() {
                   {getPractitionerType(parseInt(selectedPractitioner)) === 'nurse' && (
                     <p className="mb-0"><strong>Availability:</strong> Monday-Saturday, 7:00 AM - 6:00 PM</p>
                   )}
-                  {getPractitionerType(parseInt(selectedPractitioner)) === 'pharmacist' && (
-                    <p className="mb-0"><strong>Availability:</strong> Monday-Sunday, 9:00 AM - 7:00 PM</p>
-                  )}
+                  {/* Removed pharmacist availability */}
                 </div>
               </div>
             )}
@@ -590,12 +573,7 @@ function HealthcareAppointmentSystem() {
                   >
                     Nurses
                   </button>
-                  <button 
-                    className={`btn btn-sm ${practitionerTypeFilter === 'pharmacist' ? 'btn-light' : 'btn-outline-light'}`}
-                    onClick={() => setPractitionerTypeFilter('pharmacist')}
-                  >
-                    Pharmacists
-                  </button>
+                  {/* Removed pharmacist filter button */}
                 </div>
               </div>
               <div className="card-body">
@@ -695,7 +673,7 @@ function HealthcareAppointmentSystem() {
             
             {/* Appointment Statistics */}
             <div className="row mt-4">
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="card text-center bg-light">
                   <div className="card-body">
                     <h5>Total Appointments</h5>
@@ -703,7 +681,7 @@ function HealthcareAppointmentSystem() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="card text-center bg-light">
                   <div className="card-body">
                     <h5>Doctor Appointments</h5>
@@ -711,7 +689,7 @@ function HealthcareAppointmentSystem() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-4">
                 <div className="card text-center bg-light">
                   <div className="card-body">
                     <h5>Nurse Appointments</h5>
@@ -719,14 +697,7 @@ function HealthcareAppointmentSystem() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
-                <div className="card text-center bg-light">
-                  <div className="card-body">
-                    <h5>Pharmacist Appointments</h5>
-                    <h2>{appointments.filter(a => getPractitionerType(a.practitionerId) === 'pharmacist').length}</h2>
-                  </div>
-                </div>
-              </div>
+              {/* Removed pharmacist appointments stat card */}
             </div>
           </div>
         </div>
