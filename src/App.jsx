@@ -20,6 +20,7 @@ import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
 import PatAfterLogin from './PatientDashboard/PatAfterLogin'
 import NurseAfterLogin from './NurseDashboard/NurseAfterLogin'
 import DoctorList from './DoctorDashboard/DoctorList'
+import AdminDashboard from './Admin Dashboard/AdminDashboard'
 
 
 const App = () => {
@@ -29,7 +30,9 @@ const App = () => {
     '/docafterlogin',
     '/patafterlogin',
     '/nurafterlogin',
-    '/doclist'
+    '/doclist',
+    '/admindash',
+    '/appointment'
   ];
   
   const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
@@ -55,7 +58,7 @@ const App = () => {
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
         <Route path='/doclist' element={<DoctorList/>}/>
-
+        <Route path='/admindash' element={<AdminDashboard/>}/>
       </Routes> 
     </div>
   )
