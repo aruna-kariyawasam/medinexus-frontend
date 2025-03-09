@@ -14,7 +14,7 @@ import Nursing from './Pages/Nursing/Nursing'
 import TermsAndConditions from './Pages/Register/users/TermsandConditions'
 
 import Appointment_Doc from './Pages/Appointment/Appointment_Doc'
-
+import Doctor_Appoinment from './Pages/Doctor_Appoinment/Doctor_Appoinment'
 
 import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
 import PatAfterLogin from './PatientDashboard/PatAfterLogin'
@@ -55,6 +55,7 @@ const App = () => {
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
         <Route path='/doclist' element={<DoctorList/>}/>
+        <Route path='/Doc_Appoinment' element={<Doctor_Appoinment/>}/>
 
       </Routes> 
     </div>
