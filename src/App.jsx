@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from './Components/Navbar/Navbar'
-import {Routes, Route} from 'react-router-dom'
+import {Routes, Route, useLocation} from 'react-router-dom'
 import Services from './Pages/Services/Services'
 import Contact from './Pages/Contact/Contact'
 import Home from './Pages/Home/Home'
@@ -13,10 +13,31 @@ import Register_patient from './Pages/Register/users/Register_patient'
 import Nursing from './Pages/Nursing/Nursing'
 import TermsAndConditions from './Pages/Register/users/TermsandConditions'
 
+import Appointment_Doc from './Pages/Appointment/Appointment_Doc'
+import Doctor_Appoinment from './Pages/Doctor_Appoinment/Doctor_Appoinment'
+
+import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
+import PatAfterLogin from './PatientDashboard/PatAfterLogin'
+import NurseAfterLogin from './NurseDashboard/NurseAfterLogin'
+import DoctorList from './DoctorDashboard/DoctorList'
+
+
 const App = () => {
+  const location = useLocation();
+  
+  const hideNavbarPaths = [
+    '/docafterlogin',
+    '/patafterlogin',
+    '/nurafterlogin',
+    '/doclist'
+  ];
+  
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
+  
   return (
     <div className='app'>
-      <Navbar/>   
+      {shouldShowNavbar && <Navbar/>}   
+      
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/contact' element={<Contact/>}/>
@@ -29,6 +50,13 @@ const App = () => {
         <Route path='/nurRegi' element={<Register_nurse/>}/>
         <Route path='/patRegi' element={<Register_patient/>}/>
         <Route path='/tc' element={<TermsAndConditions/>}/>
+        <Route path='/appointment' element={<Appointment_Doc/>}/>
+        <Route path='/docafterlogin' element={<DocAfterLogin/>}/>
+        <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
+        <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
+        <Route path='/doclist' element={<DoctorList/>}/>
+        <Route path='/Doc_Appoinment' element={<Doctor_Appoinment/>}/>
+
       </Routes> 
     </div>
   )

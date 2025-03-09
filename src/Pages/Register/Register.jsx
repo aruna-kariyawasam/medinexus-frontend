@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { assets } from '../../assets/assets';
+import { assets } from '../../assets/assets.js';
 import { useNavigate } from "react-router-dom";
 
 
@@ -18,7 +18,15 @@ const Register = () => {
   };
   
   return (
-    <div>
+    <div style={{ 
+      backgroundImage: `url(${assets.login_box_bg})`,
+      backgroundAttachment:'scroll',
+      backgroundPosition:'center',
+      backgroundRepeat:'no-repeat',
+      backgroundSize:'cover',
+      height: '140vh',
+      width:'100%'
+     }}>
       <Container className="my-4">
         <Row className="g-4">
           {[
@@ -30,7 +38,11 @@ const Register = () => {
             <Col xs={12} sm={6} md={6} lg={3} key={item.id}>
               <Card
                 className="text-center"
-                style={{ borderRadius: '25px', border: '0.25px solid navy' }}
+                style={{ 
+                  borderRadius: '25px',
+                  border: '0.25px solid navy',
+                  marginTop:'120px'
+                }}
               >
                 <Card.Img
                   variant="top"

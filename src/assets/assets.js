@@ -24,6 +24,12 @@ import image_02 from './img02.jpg'
 import image_03 from './img03.jpg'
 import image_04 from './img04.jpg'
 
+import zoomConsultation from './zoomConsultation.jpg'
+import doctorVisiting from './doctorVisiting.jpg'
+import nursingAssistance from './nursingAssistance.jpg'
+import Square_logo from './Square_logo.png'
+
+
 export const assets ={
     logo,
     congratulation_bg,
@@ -42,5 +48,9 @@ export const assets ={
     image_01,
     image_02,
     image_03,
-    image_04
+    image_04,
+    zoomConsultation,
+    doctorVisiting,
+    nursingAssistance,
+    Square_logo
 }

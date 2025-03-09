@@ -72,7 +72,7 @@ const Services = () => {
   return (
     <div className="Medinexus-Services">
       <Container className="my-4">
-        <Row className="g-4 justify-content-center">
+        <Row className="g-4 justify-content-center" style={{  marginTop:'100px' }}>
           {[
             { id: 1, title: 'Doctor Services', image: assets.contact_doctor, accordion: accordionContent.doctor, href: '' },
             { id: 2, title: 'Pharmacy Services', image: assets.contact_pharmacist, accordion: accordionContent.pharmacy, href: '' },
@@ -81,7 +81,7 @@ const Services = () => {
             <Col xs={12} sm={6} md={4} key={item.id}>
               <Card
                 className="text-center"
-                style={{ borderRadius: '25px', border: '0.25px solid navy', height: '100%' }}
+                style={{ borderRadius: '25px', border: '0.25px solid navy', height: '100%'}}
               >
                 <Card.Img
                   variant="top"
