@@ -17,9 +17,17 @@ import {
   faUser,
   faSignOutAlt,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faHeartbeat,
+  faStethoscope,
+  faPhoneAlt,
+  faCheck,
+  faTimes,
+  faUserCircle,
+  faBriefcaseMedical,
+  faCalendarDay,
+  faAllergies
 } from '@fortawesome/free-solid-svg-icons';
-
 
 const MedicalDashboard = () => {
   // State for managing dashboard data
@@ -28,16 +36,17 @@ const MedicalDashboard = () => {
     todayPatients: 68,
     todayAppointments: 85,
     appointments: [
-      { name: 'M.J. Mical', type: 'Health Checkup', time: 'On Going' },
-      { name: 'Sanath Deo', type: 'Health Checkup', time: '12:30 PM' },
-      { name: 'Loeara Phanj', type: 'Report', time: '01:00 PM' },
-      { name: 'Komola Haris', type: 'Common Cold', time: '01:30 PM' }
+      { id: 'APT-001', name: 'M.J. Mical', type: 'Health Checkup', time: 'On Going', age: 42, bloodGroup: 'B+', allergies: ['Sulfa Drugs'], currentCondition: 'Health Checkup' },
+      { id: 'APT-002', name: 'Sanath Deo', type: 'Health Checkup', time: '12:30 PM', age: 35, bloodGroup: 'O+', allergies: ['Penicillin', 'Peanuts'], currentCondition: 'Health Checkup' },
+      { id: 'APT-003', name: 'Loeara Phanj', type: 'Report', time: '01:00 PM', age: 28, bloodGroup: 'A-', allergies: [], currentCondition: 'Report Consultation' },
+      { id: 'APT-004', name: 'Komola Haris', type: 'Common Cold', time: '01:30 PM', age: 47, bloodGroup: 'AB+', allergies: ['Aspirin'], currentCondition: 'Common Cold' }
     ],
     appointmentRequests: [
-      { name: 'Maria Sarafat', condition: 'Cold' },
-      { name: 'Jhon Deo', condition: 'Over Sweating' }
+      { id: 'REQ-001', name: 'Maria Sarafat', condition: 'Cold' },
+      { id: 'REQ-002', name: 'Jhon Deo', condition: 'Over Sweating' }
     ],
     nextPatient: {
+      id: '022090902005',
       name: 'Sanath Deo',
       patientId: '022090902005',
       dob: '15 January 1989',
@@ -48,52 +57,65 @@ const MedicalDashboard = () => {
     }
   });
 
+  const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  
+  const doctorData = {
+    id: 'DOC-2023-789',
+    fullName: 'Dr. Ravindu Silva',
+    specialization: 'MBBs, FCPS, MD Medicine',
+    yearsOfExperience: 12,
+    availableDays: ['Monday', 'Tuesday', 'Thursday', 'Friday']
+  };
+
+  const menuItems = [
+    { name: 'Dashboard', icon: faHome },
+    { name: 'Appointment', icon: faClipboardList },
+    { name: 'Payment', icon: faWallet },
+    { name: 'Profile', icon: faUser },
+    { name: 'Logout', icon: faSignOutAlt }
+  ];
+
   // WebSocket connection for real-time updates (simulated)
   useEffect(() => {
     // Simulating a WebSocket connection
-    const socket = new WebSocket('wss://example-medical-dashboard-socket.com');
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      // Handle different types of real-time updates
-      switch(data.type) {
-        case 'NEW_APPOINTMENT':
-          setDashboardData(prev => ({
-            ...prev,
-            todayAppointments: prev.todayAppointments + 1,
-            appointments: [...prev.appointments, data.appointment]
-          }));
-          break;
-        
-        case 'APPOINTMENT_REQUEST':
-          setDashboardData(prev => ({
-            ...prev,
-            appointmentRequests: [...prev.appointmentRequests, data.request]
-          }));
-          break;
-        
-        case 'PATIENT_UPDATE':
-          setDashboardData(prev => ({
-            ...prev,
-            nextPatient: data.patient
-          }));
-          break;
-      }
+    const socket = {
+      onmessage: null,
+      close: () => {}
     };
 
-    return () => socket.close();
+    // Simulate receiving a message after 5 seconds
+    const timer = setTimeout(() => {
+      if (socket.onmessage) {
+        socket.onmessage({
+          data: JSON.stringify({
+            type: 'APPOINTMENT_REQUEST',
+            request: { id: 'REQ-003', name: 'Amara Jayasinghe', condition: 'Migraine' }
+          })
+        });
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      socket.close();
+    };
   }, []);
 
   // Handlers for interactive components
   const handleAppointmentAccept = (request) => {
     setDashboardData(prev => ({
       ...prev,
-      appointmentRequests: prev.appointmentRequests.filter(r => r.name !== request.name),
+      appointmentRequests: prev.appointmentRequests.filter(r => r.id !== request.id),
       appointments: [...prev.appointments, { 
+        id: `APT-${prev.appointments.length + 1}`,
         name: request.name, 
-        type: 'Pending', 
-        time: 'Scheduled' 
+        type: request.condition, 
+        time: 'Scheduled',
+        age: 30,
+        bloodGroup: 'O+',
+        allergies: [],
+        currentCondition: request.condition
       }]
     }));
   }
@@ -101,9 +123,13 @@ const MedicalDashboard = () => {
   const handleAppointmentReject = (request) => {
     setDashboardData(prev => ({
       ...prev,
-      appointmentRequests: prev.appointmentRequests.filter(r => r.name !== request.name)
+      appointmentRequests: prev.appointmentRequests.filter(r => r.id !== request.id)
     }));
   }
+
+  const handlePatientSelect = (appointment) => {
+    setSelectedPatient(appointment);
+  };
 
   const DynamicCalendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -112,7 +138,6 @@ const MedicalDashboard = () => {
     const generateCalendarDays = (date) => {
       const year = date.getFullYear();
       const month = date.getMonth();
-      
       
       // First day of the month
       const firstDay = new Date(year, month, 1);
@@ -185,8 +210,8 @@ const MedicalDashboard = () => {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     return (
-      <div className="card">
-        <div className="card-header d-flex justify-content-between align-items-center">
+      <div className="card shadow-sm">
+        <div className="card-header bg-white d-flex justify-content-between align-items-center">
           <button 
             className="btn btn-link text-dark" 
             onClick={goToPreviousMonth}
@@ -204,9 +229,9 @@ const MedicalDashboard = () => {
           </button>
         </div>
         <div className="card-body">
-          <div className="row">
+          <div className="row mb-2">
             {daysOfWeek.map(day => (
-              <div key={day} className="col text-center fw-bold text-muted">
+              <div key={day} className="col text-center fw-bold text-muted small">
                 {day}
               </div>
             ))}
@@ -218,7 +243,7 @@ const MedicalDashboard = () => {
                 className={`col text-center p-2 ${
                   day.month === 'current' 
                     ? day.isToday 
-                      ? 'bg-primary text-white' 
+                      ? 'bg-primary text-white rounded' 
                       : '' 
                     : 'text-muted'
                 }`}
@@ -232,273 +257,323 @@ const MedicalDashboard = () => {
     );
   };
 
+  const renderActiveTabContent = () => {
+    switch(activeMenu) {
+      case 'Dashboard':
+        return (
+          <>
+            {/* Key Metrics Cards */}
+            <div className="row mb-4 g-3">
+              <div className="col-md-3">
+                <div className="card bg-primary text-white">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="small">Total Patients</div>
+                      <div className="fs-4">{dashboardData.totalPatients}+</div>
+                      <small>Till Today</small>
+                    </div>
+                    <FontAwesomeIcon icon={faUsers} size="2x" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="card bg-success text-white">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="small">Today Patients</div>
+                      <div className="fs-4">{dashboardData.todayPatients}</div>
+                      <small>21 Dec-2021</small>
+                    </div>
+                    <FontAwesomeIcon icon={faUserPlus} size="2x" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="card bg-warning text-dark">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="small">Today Appointments</div>
+                      <div className="fs-4">{dashboardData.todayAppointments}</div>
+                      <small>21 Dec-2021</small>
+                    </div>
+                    <FontAwesomeIcon icon={faCalendar} size="2x" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="card bg-info text-white">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="small">Available Days</div>
+                      <div className="fs-4">{doctorData.availableDays.length}</div>
+                      <small>Per Week</small>
+                    </div>
+                    <FontAwesomeIcon icon={faCalendarDay} size="2x" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Appointments and Patient Details Section */}
+            <div className="row mb-4">
+              {/* Today's Appointments */}
+              <div className="col-md-5 mb-4">
+                <div className="card shadow-sm h-100">
+                  <div className="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 className="card-title mb-0">Today Appointment</h5>
+                    <button className="btn btn-sm btn-outline-primary">See All</button>
+                  </div>
+                  <div className="card-body">
+                    {dashboardData.appointments.map((appointment) => (
+                      <div 
+                        key={appointment.id} 
+                        className={`d-flex justify-content-between align-items-center mb-3 p-2 ${
+                          selectedPatient?.id === appointment.id ? 'bg-light rounded' : ''
+                        }`}
+                        role="button"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handlePatientSelect(appointment)}
+                      >
+                        <div className="d-flex align-items-center">
+                          <div className="bg-light rounded-circle p-2 me-3">
+                            <FontAwesomeIcon icon={faUser} />
+                          </div>
+                          <div>
+                            <h6 className="mb-1">{appointment.name}</h6>
+                            <small className="text-muted">{appointment.type}</small>
+                          </div>
+                        </div>
+                        <span className="text-primary">{appointment.time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Patient Details */}
+              <div className="col-md-7 mb-4">
+                <div className="card shadow-sm h-100">
+                  <div className="card-header bg-white">
+                    <h5 className="card-title mb-0">Patient Details</h5>
+                  </div>
+                  <div className="card-body">
+                    {selectedPatient ? (
+                      <>
+                        <div className="d-flex align-items-center mb-4">
+                          <div className="bg-light rounded-circle p-3 me-3">
+                            <FontAwesomeIcon icon={faUser} size="2x" />
+                          </div>
+                          <div>
+                            <h4 className="mb-1">{selectedPatient.name}</h4>
+                            <small className="text-muted">ID: {selectedPatient.id}</small>
+                          </div>
+                        </div>
+
+                        <div className="row mb-3">
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <small className="text-muted">Age</small>
+                              <p className="mb-0">{selectedPatient.age} Years</p>
+                            </div>
+                            <div className="mb-3">
+                              <small className="text-muted">Blood Group</small>
+                              <p className="mb-0">
+                                <FontAwesomeIcon icon={faHeartbeat} className="me-2" />
+                                {selectedPatient.bloodGroup}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="mb-3">
+                              <small className="text-muted">Current Condition</small>
+                              <p className="mb-0">{selectedPatient.currentCondition}</p>
+                            </div>
+                            <div className="mb-3">
+                              <small className="text-muted">Appointment Time</small>
+                              <p className="mb-0">{selectedPatient.time}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mb-3">
+                          <small className="text-muted">Allergies</small>
+                          <div>
+                            {selectedPatient.allergies.length > 0 ? (
+                              selectedPatient.allergies.map((allergy, index) => (
+                                <span key={index} className="badge bg-danger me-2 mb-2">
+                                  <FontAwesomeIcon icon={faAllergies} className="me-1" />
+                                  {allergy}
+                                </span>
+                              ))
+                            ) : (
+                              <span>None reported</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="d-grid gap-2 d-md-flex mt-4">
+                          <button className="btn btn-primary me-md-2">
+                            <FontAwesomeIcon icon={faFileAlt} className="me-2" />
+                            View Full History
+                          </button>
+                          <button className="btn btn-outline-primary me-md-2">
+                            <FontAwesomeIcon icon={faPhone} className="me-2" />
+                            Call Patient
+                          </button>
+                          <button className="btn btn-outline-primary">
+                            <FontAwesomeIcon icon={faComment} className="me-2" />
+                            Chat
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center text-muted py-5">
+                        Select a patient from the appointments list to view details
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Appointment Requests and Calendar */}
+            <div className="row">
+              {/* Appointment Requests */}
+              <div className="col-md-6 mb-4">
+                <div className="card shadow-sm">
+                  <div className="card-header bg-white">
+                    <h5 className="card-title mb-0">Appointment Request</h5>
+                  </div>
+                  <div className="card-body">
+                    {dashboardData.appointmentRequests.length > 0 ? (
+                      dashboardData.appointmentRequests.map((request) => (
+                        <div key={request.id} className="d-flex justify-content-between align-items-center mb-3">
+                          <div className="d-flex align-items-center">
+                            <div className="bg-light rounded-circle p-2 me-3">
+                              <FontAwesomeIcon icon={faUser} />
+                            </div>
+                            <div>
+                              <h6 className="mb-1">{request.name}</h6>
+                              <small className="text-muted">{request.condition}</small>
+                            </div>
+                          </div>
+                          <div>
+                            <button 
+                              className="btn btn-success btn-sm me-2"
+                              onClick={() => handleAppointmentAccept(request)}
+                            >
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button 
+                              className="btn btn-danger btn-sm me-2"
+                              onClick={() => handleAppointmentReject(request)}
+                            >
+                              <FontAwesomeIcon icon={faTimes} />
+                            </button>
+                            <button 
+                              className="btn btn-primary btn-sm"
+                              onClick={() => alert(`Details for ${request.name}`)}
+                            >
+                              📝
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center text-muted py-3">
+                        No pending appointment requests
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Calendar */}
+              <div className="col-md-6">
+                <DynamicCalendar />
+              </div>
+            </div>
+          </>
+        );
+
+      default:
+        return (
+          <div className="text-center py-5">
+            <h4 className="text-muted">{activeMenu} Section</h4>
+            <p className="text-secondary">This section is currently under development</p>
+          </div>
+        );
+    }
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row">
+    <div className="container-fluid p-0">
+      <div className="row g-0">
         {/* Sidebar Navigation */}
-        <div className="col-2 bg-white vh-100 shadow-sm">
-          <div className="d-flex align-items-center p-3 border-bottom">
-            <img 
-              src="/api/placeholder/64/64" 
-              alt="Doctor Profile" 
-              className="rounded-circle me-3"
-              style={{width: '64px', height: '64px'}}
-            />
-            <div>
-              <h6 className="mb-0 fw-bold">{}</h6>
-              <small className="text-muted">MBBs, FCPS, MD Medicine</small>
+        <div className="col-md-2 bg-dark text-white" style={{ minHeight: '100vh', overflow: 'auto' }}>
+          <div className="d-flex flex-column">
+            <div className="text-center p-4 border-bottom border-secondary">
+              <div className="rounded-circle bg-primary mx-auto d-flex justify-content-center align-items-center" 
+                   style={{ width: '70px', height: '70px' }}>
+                <FontAwesomeIcon icon={faStethoscope} size="2x" className="text-white" />
+              </div>
+              <div className="mt-3 fw-bold">Doctor Portal</div>
+              <div className="small text-light">ID: {doctorData.id}</div>
+            </div>
+            
+            <nav className="py-2">
+              {menuItems.map((item, index) => (
+                <div 
+                  key={index} 
+                  className={`d-flex align-items-center p-3 ${activeMenu === item.name ? 'bg-primary' : ''}`}
+                  style={{ cursor: 'pointer', transition: 'background-color 0.3s' }}
+                  onClick={() => setActiveMenu(item.name)}
+                >
+                  <FontAwesomeIcon icon={item.icon} className="me-3" />
+                  <span>{item.name}</span>
+                </div>
+              ))}
+            </nav>
+
+            <div className="p-3 border-top border-secondary mt-auto">
+              <div className="d-flex align-items-center">
+                <FontAwesomeIcon icon={faPhoneAlt} className="me-3" />
+                <div className="small">
+                  <div>Emergency:</div>
+                  <div className="fw-bold">0112-123456</div>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <nav className="nav flex-column mt-3">
-            {[
-              { name: 'Dashboard', icon: faHome },
-              { name: 'Appointment', icon: faClipboardList },
-              { name: 'Payment', icon: faWallet },
-              { name: 'Profile', icon: faUser },
-              { name: 'Logout', icon: faSignOutAlt }
-            ].map((item) => (
-              <a 
-                key={item.name} 
-                href="#" 
-                className="nav-link text-dark py-2 px-3 d-flex align-items-center"
-              >
-                <FontAwesomeIcon icon={item.icon} className="me-2" />
-                {item.name}
-              </a>
-            ))}
-          </nav>
         </div>
 
         {/* Main Dashboard Content */}
-        <div className="col-10 bg-light p-4">
-          {/* Top Header with Search and Icons */}
-          <div className="d-flex justify-content-end align-items-center mb-4">
-            <div className="d-flex align-items-center">
-              <button className="btn btn-link text-dark me-3" onClick={() => alert('Message inbox')}>
+        <div className="col-md-10 bg-light">
+          <div className="bg-white shadow-sm p-3 d-flex justify-content-between align-items-center">
+            <h4 className="m-0">Medical Dashboard</h4>
+            <div className="d-flex align-items-center gap-3">
+              <div className="input-group" style={{ width: '250px' }}>
+                <input 
+                  type="text" 
+                  placeholder="Search" 
+                  className="form-control rounded-pill me-3"
+                />
+              </div>
+              <button className="btn btn-link text-dark me-2" onClick={() => alert('Message inbox')}>
                 <FontAwesomeIcon icon={faEnvelope} />
               </button>
-              <button className="btn btn-link text-dark me-3" onClick={() => alert('Notifications')}>
+              <button className="btn btn-link text-dark me-2" onClick={() => alert('Notifications')}>
                 <FontAwesomeIcon icon={faBell} />
               </button>
-              <input 
-                type="text" 
-                placeholder="Search" 
-                className="form-control rounded-pill me-3"
-                style={{width: '200px'}}
-              />
-              <button className="btn btn-link text-dark" onClick={() => alert('More options')}>
-                <FontAwesomeIcon icon={faEllipsisV} />
-              </button>
-            </div>
-          </div>
-
-          {/* Key Metrics Cards */}
-          <div className="row mb-4">
-            <div className="col-4">
-              <div className="card" role="button" onClick={() => alert('Total Patients Details')}>
-                <div className="card-body d-flex align-items-center">
-                  <div className="bg-primary-subtle rounded-circle p-3 me-3">
-                    <FontAwesomeIcon icon={faUsers} className="text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-muted mb-1">Total Patient</p>
-                    <h4 className="mb-0">{dashboardData.totalPatients}+</h4>
-                    <small className="text-muted">Till Today</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-4">
-              <div className="card" role="button" onClick={() => alert('Today\'s Patients Details')}>
-                <div className="card-body d-flex align-items-center">
-                  <div className="bg-success-subtle rounded-circle p-3 me-3">
-                    <FontAwesomeIcon icon={faUserPlus} className="text-success" />
-                  </div>
-                  <div>
-                    <p className="text-muted mb-1">Today Patient</p>
-                    <h4 className="mb-0">{dashboardData.todayPatients}</h4>
-                    <small className="text-muted">21 Dec-2021</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-4">
-              <div className="card" role="button" onClick={() => alert('Today\'s Appointments Details')}>
-                <div className="card-body d-flex align-items-center">
-                  <div className="bg-warning-subtle rounded-circle p-3 me-3">
-                    <FontAwesomeIcon icon={faCalendar} className="text-warning" />
-                  </div>
-                  <div>
-                    <p className="text-muted mb-1">Today Appointments</p>
-                    <h4 className="mb-0">{dashboardData.todayAppointments}</h4>
-                    <small className="text-muted">21 Dec-2021</small>
-                  </div>
-                </div>
+              <div className="d-flex align-items-center gap-2">
+                <FontAwesomeIcon icon={faUserCircle} size="lg" />
+                <span>{doctorData.fullName}</span>
               </div>
             </div>
           </div>
 
-          {/* Appointments and Next Patient Section */}
-          <div className="row mb-4">
-            {/* Today's Appointments */}
-            <div className="col-6">
-              <div className="card">
-                <div className="card-header">
-                  <h5 className="card-title mb-0">Today Appointment</h5>
-                </div>
-                <div className="card-body">
-                  {dashboardData.appointments.map((appointment) => (
-                    <div 
-                      key={appointment.name} 
-                      className="d-flex justify-content-between align-items-center mb-3"
-                      role="button"
-                      onClick={() => alert(`Appointment details for ${appointment.name}`)}
-                    >
-                      <div className="d-flex align-items-center">
-                        <img 
-                          src="/api/placeholder/40/40" 
-                          alt={appointment.name} 
-                          className="rounded-circle me-3"
-                          style={{width: '40px', height: '40px'}}
-                        />
-                        <div>
-                          <h6 className="mb-1">{appointment.name}</h6>
-                          <small className="text-muted">{appointment.type}</small>
-                        </div>
-                      </div>
-                      <span className="text-primary">{appointment.time}</span>
-                    </div>
-                  ))}
-                  <button className="btn btn-link w-100 text-center">See All</button>
-                </div>
-              </div>
-            </div>
-
-            {/* Next Patient Details */}
-            <div className="col-6">
-              <div className="card">
-                <div className="card-header">
-                  <h5 className="card-title mb-0">Next Patient Details</h5>
-                </div>
-                <div className="card-body">
-                  <div className="d-flex align-items-center mb-3">
-                    <img 
-                      src="/api/placeholder/64/64" 
-                      alt="Patient" 
-                      className="rounded-circle me-3"
-                      style={{width: '64px',
-                      height: '64px'}}/>
-                    <div>
-                      <h5 className="mb-1">{dashboardData.nextPatient.name}</h5>
-                      <small className="text-muted">Patient ID: {dashboardData.nextPatient.patientId}</small>
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <div className="col-6">
-                      <small className="text-muted">D.O.B</small>
-                      <p>{dashboardData.nextPatient.dob}</p>
-                    </div>
-                    <div className="col-6">
-                      <small className="text-muted">Sex</small>
-                      <p>{dashboardData.nextPatient.sex}</p>
-                    </div>
-                    <div className="col-6">
-                      <small className="text-muted">Weight</small>
-                      <p>{dashboardData.nextPatient.weight}</p>
-                    </div>
-                    <div className="col-6">
-                      <small className="text-muted">Reg. Date</small>
-                      <p>{dashboardData.nextPatient.regDate}</p>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <small className="text-muted d-block mb-2">Patient History</small>
-                    <div>
-                      {dashboardData.nextPatient.medicalHistory.map((condition) => (
-                        <span key={condition} className={`badge me-2 ${
-                          condition === 'Asthma' ? 'bg-primary' : 
-                          condition === 'Hypertension' ? 'bg-danger' : 
-                          'bg-warning'
-                        }`}>
-                          {condition}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="d-flex">
-                    <button className="btn btn-primary me-2 flex-grow-1" onClick={() => alert('Calling patient')}>
-                      <FontAwesomeIcon icon={faPhone} className="me-2" />
-                      (988) 556-0102
-                    </button>
-                    <button className="btn btn-outline-primary me-2 flex-grow-1" onClick={() => alert('View Documents')}>
-                      <FontAwesomeIcon icon={faFileAlt} className="me-2" />
-                      Document
-                    </button>
-                    <button className="btn btn-outline-primary flex-grow-1" onClick={() => alert('Start Chat')}>
-                      <FontAwesomeIcon icon={faComment} className="me-2" />
-                      Chat
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Appointment Requests and Calendar */}
-          <div className="row">
-            {/* Appointment Requests */}
-            <div className="col-6">
-              <div className="card">
-                <div className="card-header">
-                  <h5 className="card-title mb-0">Appointment Request</h5>
-                </div>
-                <div className="card-body">
-                  {dashboardData.appointmentRequests.map((request) => (
-                    <div key={request.name} className="d-flex justify-content-between align-items-center mb-3">
-                      <div className="d-flex align-items-center">
-                        <img 
-                          src="/api/placeholder/40/40" 
-                          alt={request.name} 
-                          className="rounded-circle me-3"
-                          style={{width: '40px', height: '40px'}}
-                        />
-                        <div>
-                          <h6 className="mb-1">{request.name}</h6>
-                          <small className="text-muted">{request.condition}</small>
-                        </div>
-                      </div>
-                      <div>
-                        <button 
-                          className="btn btn-success btn-sm me-2"
-                          onClick={() => handleAppointmentAccept(request)}
-                        >
-                          ✓
-                        </button>
-                        <button 
-                          className="btn btn-danger btn-sm me-2"
-                          onClick={() => handleAppointmentReject(request)}
-                        >
-                          ✗
-                        </button>
-                        <button 
-                          className="btn btn-primary btn-sm"
-                          onClick={() => alert(`Details for ${request.name}`)}
-                        >
-                          📝
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  <button className="btn btn-link w-100 text-center">See All</button>
-                </div>
-              </div>
-            </div>
-
-            {/* Dynamic Calendar */}
-            <div className="col-6">
-              <DynamicCalendar />
-            </div>
+          <div className="p-4">
+            {renderActiveTabContent()}
           </div>
         </div>
       </div>

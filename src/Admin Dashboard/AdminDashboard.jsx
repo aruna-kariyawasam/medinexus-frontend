@@ -585,6 +585,7 @@ const AdminDashboard = () => {
                   />
                 ) : (
                   <FontAwesomeIcon icon={faUserCircle} size="lg" />
+                  
                 )}
                 <span>{adminDetails.name}</span>
               </div>
