@@ -1,10 +1,6 @@
 import React, { useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { 
-  Phone, 
-  Mail, 
-  MapPin,
-} from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
 
@@ -33,7 +29,6 @@ const ContactForm = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
     
-    // EmailJS configuration
     emailjs.sendForm(
       'service_8ampg1z', 
       'template_f82zhkn', 
@@ -45,11 +40,9 @@ const ContactForm = () => {
         title: "Email Sent!",
         text: "Thank you for your feedback! We will get back to you soon.",
         icon: "success",
-        draggable: true
+        confirmButtonColor: '#060d24',
+        showConfirmButton: true,
       });
-      // console.log('Email sent successfully:', result.text);
-      // setSubmitStatus({ success: true, message: 'Thank you for your feedback! We will get back to you soon.' });
-      // Reset form after successful submission
       setFormData({
         firstName: '',
         lastName: '',
@@ -68,132 +61,140 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="container-fluid vh-100" style={{ marginTop:'100px' }}>
-      <div className="row h-100">
-        {/* Left Column with Enhanced Icons */}
-        <div className="col-md-5 bg-light d-flex flex-column justify-content-center p-5">
-          <div className="text-center">
-            <h1 className="mb-4">Contact Us</h1>
-            <p>Have questions or need assistance? Our team is here to help!
+    <div className="container-fluid py-5" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh',marginTop:'38px' }}>
+      <div className="row justify-content-center">
+        {/* Contact Information Section */}
+        <div className="col-lg-4 col-md-5 p-5 text-white" style={{ backgroundColor: '#060d24' }}>
+          <h2 className="mb-4 border-bottom pb-3" style={{ borderColor: '#1e3a8a' }}>Get in Touch</h2>
+          <p className="mb-5"  style={{ color: '#6c757d' }}>Have questions or need assistance? Our team is here to help!</p>
+          
+          <div className="contact-info">
+            <div className="d-flex mb-4">
+              <div className="me-3" style={{ color: '#3b82f6' }}>
+                <Phone size={28} />
+              </div>
+              <div>
+                <h5 style={{ color: '#3b82f6' }}>Phone</h5>
+                <p className="mb-0 text-white-50">0915050981</p>
+              </div>
+            </div>
 
-Whether you need to schedule an appointment, inquire about our services, or seek medical support, feel free to reach out to us.</p>
-            <div className="contact-details mt-5">
-              {/* Phone Contact */}
-              <div className="mb-3 d-flex align-items-center justify-content-left">
-                <Phone 
-                  color="#007bff" 
-                  size={24} 
-                  className="me-3" 
-                />
-                <h5 className="m-0">0915050981</h5>
+            <div className="d-flex mb-4">
+              <div className="me-3" style={{ color: '#3b82f6' }}>
+                <Mail size={28} />
               </div>
-              
-              {/* Email Contact */}
-              <div className="mb-3 d-flex align-items-center justify-content-left">
-                <Mail 
-                  color="#28a745" 
-                  size={24} 
-                  className="me-3" 
-                />
-                <h5 className="m-0">medinexus.msms.0001@gmail.com</h5>
+              <div>
+                <h5 style={{ color: '#3b82f6' }}>Email</h5>
+                <p className="mb-0 text-white-50">medinexus.msms.0001@gmail.com</p>
               </div>
-              
-              {/* Address Contact */}
-              <div className="mb-3 d-flex align-items-center justify-content-left">
-                <MapPin 
-                  color="#dc3545" 
-                  size={24} 
-                  className="me-3" 
-                />
-                <h5 className="m-0">34 McCallum Rd, Colombo 01000</h5>
+            </div>
+
+            <div className="d-flex">
+              <div className="me-3" style={{ color: '#3b82f6' }}>
+                <MapPin size={28} />
+              </div>
+              <div>
+                <h5 style={{ color: '#3b82f6' }}>Address</h5>
+                <p className="mb-0 text-white-50">34 McCallum Rd, Colombo 01000</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column (Form) */}
-        <div className="col-md-6 bg-light d-flex align-items-center justify-content-center p-8">
-          <div className="w-75">
-            {/* Success/Error Message */}
+        {/* Contact Form Section */}
+        <div className="col-lg-6 col-md-7 p-5 bg-white">
+          <div className="section-header mb-5">
+            <h2 className="text-dark mb-3">Send Us a Message</h2>
+            <p className="text-muted">We'll get back to you within 24 hours</p>
+          </div>
+          
+          <form ref={form} onSubmit={handleSubmit}>
             {submitStatus && (
               <div className={`alert ${submitStatus.success ? 'alert-success' : 'alert-danger'} mb-4`} role="alert">
                 {submitStatus.message}
               </div>
             )}
-            
-            <form ref={form} onSubmit={handleSubmit}>
-              <div className="row mb-5">
-                <div className="col-md-6 mb-5 mb-md-0">
-                  <input 
-                    type="text" 
-                    className="form-control rounded-pill" 
-                    placeholder="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required 
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input 
-                    type="text" 
-                    className="form-control rounded-pill" 
-                    placeholder="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required 
-                  />
-                </div>
-              </div>
-              
-              <div className="mb-5">
+
+            <div className="row g-4 mb-4">
+              <div className="col-md-6">
                 <input 
-                  type="email" 
-                  className="form-control rounded-pill" 
-                  placeholder="example@email.com"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              
-              <div className="mb-5">
-                <input 
-                  type="tel" 
-                  className="form-control rounded-pill" 
-                  placeholder="Phone (optional)"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div className="mb-5">
-                <textarea 
-                  className="form-control" 
-                  rows="4" 
-                  placeholder="Type your message..."
-                  name="message"
-                  value={formData.message}
+                  type="text"
+                  className="form-control border-2 py-3"
+                  placeholder="First Name"
+                  name="firstName"
+                  style={{ borderColor: '#e2e8f0' }}
+                  value={formData.firstName}
                   onChange={handleChange}
                   required
-                ></textarea>
+                />
               </div>
-              
-              <div>
-                <button 
-                  type="submit" 
-                  className="btn btn-primary w-100 rounded-pill"
-                  style={{backgroundColor:'#060d24'}}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Submit'}
-                </button>
+              <div className="col-md-6">
+                <input 
+                  type="text"
+                  className="form-control border-2 py-3"
+                  placeholder="Last Name"
+                  name="lastName"
+                  style={{ borderColor: '#e2e8f0' }}
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div className="mb-4">
+              <input 
+                type="email"
+                className="form-control border-2 py-3"
+                placeholder="Email Address"
+                name="email"
+                style={{ borderColor: '#e2e8f0' }}
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <input 
+                type="tel"
+                className="form-control border-2 py-3"
+                placeholder="Phone Number (optional)"
+                name="phone"
+                style={{ borderColor: '#e2e8f0' }}
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="mb-4">
+              <textarea
+                className="form-control border-2 py-3"
+                rows="5"
+                placeholder="Your Message"
+                name="message"
+                style={{ borderColor: '#e2e8f0' }}
+                value={formData.message}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className="btn w-100 py-3 text-white"
+              style={{ 
+                backgroundColor: '#060d24',
+                transition: 'all 0.3s ease',
+                border: '2px solid #060d24'
+              }}
+              disabled={isSubmitting}
+              onMouseOver={(e) => (e.target.style.backgroundColor = '#1e3a8a')}
+              onMouseOut={(e) => (e.target.style.backgroundColor = '#060d24')}
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
+          </form>
         </div>
       </div>
     </div>

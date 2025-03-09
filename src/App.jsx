@@ -17,9 +17,10 @@ import Appointment_Doc from './Pages/Appointment/Appointment_Doc'
 import Doctor_Appoinment from './Pages/Doctor_Appoinment/Doctor_Appoinment'
 
 import DocAfterLogin from './DoctorDashboard/DocAfterLogin'
-import PatAfterLogin from './PatientDashboard/PatAfterLogin'
+//import PatAfterLogin from './PatientDashboard/PatAfterLogin'
 import NurseAfterLogin from './NurseDashboard/NurseAfterLogin'
 import DoctorList from './DoctorDashboard/DoctorList'
+import AdminDashboard from './Admin Dashboard/AdminDashboard'
 
 
 const App = () => {
@@ -29,7 +30,9 @@ const App = () => {
     '/docafterlogin',
     '/patafterlogin',
     '/nurafterlogin',
-    '/doclist'
+    '/doclist',
+    '/admindash',
+    '/appointment'
   ];
   
   const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
@@ -55,8 +58,6 @@ const App = () => {
         <Route path='/patafterlogin' element={<PatAfterLogin/>}/>
         <Route path='/nurafterlogin' element={<NurseAfterLogin/>}/>
         <Route path='/doclist' element={<DoctorList/>}/>
-        <Route path='/Doc_Appoinment' element={<Doctor_Appoinment/>}/>
-
       </Routes> 
     </div>
   )
