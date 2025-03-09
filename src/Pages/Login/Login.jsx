@@ -3,11 +3,18 @@ import './Login.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { assets } from '../../assets/assets.js';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [selectedIdentity, setSelectedIdentity] = useState('');
   const [emailLabel, setEmailLabel] = useState('Email address');
   const [emailPlaceholder, setEmailPlaceholder] = useState('Enter email');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleIdentityChange = (event) => {
     const identity = event.target.value;
@@ -52,6 +59,96 @@ const Login = () => {
         return '/patRegi';
       default:
         return null;
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    
+    // Validate form
+    if (!selectedIdentity) {
+      setError('Please select your role');
+      return;
+    }
+    
+    if (!email.trim()) {
+      setError('Please enter your ID/email');
+      return;
+    }
+    
+    if (!password.trim()) {
+      setError('Please enter your password');
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      
+      const response = await axios.post('http://localhost:8080/api/auth/signin', {
+        username: email, // API might expect username instead of email
+        password: password,
+        role: selectedIdentity // Sending role information to the backend
+      });
+      
+      // Handle successful login
+      if (response.data && response.data.token) {
+        // Store token and user info in localStorage or state management system
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        // Redirect based on role
+        switch (selectedIdentity) {
+          case '1':
+            navigate('/admin-dashboard');
+            break;
+          case '2':
+            navigate('/doctor-dashboard');
+            break;
+          case '3':
+            navigate('/nurse-dashboard');
+            break;
+          case '4':
+            navigate('/pharmacist-dashboard');
+            break;
+          case '5':
+            navigate('/patient-dashboard');
+            break;
+          default:
+            navigate('/');
+        }
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (err.response.status === 401) {
+          setError('Invalid credentials. Please try again.');
+        } else if (err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+        } else {
+          setError('An error occurred during login. Please try again.');
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError('No response from server. Please check your connection.');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError('An error occurred. Please try again later.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,33 +227,43 @@ const Login = () => {
                 }}>LOGIN</h1>
               </div>
               <br/>
-              <Form.Label>Identity</Form.Label> 
-              <Form.Select 
-                aria-label="Select identity"  
-                style={{ border: '0.5px solid navy' }}
-                onChange={handleIdentityChange}
-                value={selectedIdentity}
-                required
-              >
-                <option value="">Select your role</option>
-                <option value="1">Admin</option>
-                <option value="2">Doctor</option>
-                <option value="3">Nurse</option>
-                <option value="4">Pharmacist</option>
-                <option value="5">Patient</option>
-              </Form.Select>
-              <br/>
-              <Form>
+              
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+              
+              <Form onSubmit={handleSubmit}>
+                <Form.Label>Identity</Form.Label> 
+                <Form.Select 
+                  aria-label="Select identity"  
+                  style={{ border: '0.5px solid navy' }}
+                  onChange={handleIdentityChange}
+                  value={selectedIdentity}
+                  required
+                >
+                  <option value="">Select your role</option>
+                  <option value="1">Admin</option>
+                  <option value="2">Doctor</option>
+                  <option value="3">Nurse</option>
+                  <option value="4">Pharmacist</option>
+                  <option value="5">Patient</option>
+                </Form.Select>
+                <br/>
+                
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>{emailLabel}</Form.Label>
                   <Form.Control 
-                    type="email" 
+                    type="text" 
                     placeholder={emailPlaceholder} 
                     style={{ border: '0.5px solid navy' }}
+                    value={email}
+                    onChange={handleEmailChange}
                     required
                   />
                   <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
+                    We'll never share your information with anyone else.
                   </Form.Text>
                 </Form.Group>
 
@@ -166,6 +273,8 @@ const Login = () => {
                     type="password" 
                     placeholder="Password"  
                     style={{ border: '0.5px solid navy' }}
+                    value={password}
+                    onChange={handlePasswordChange}
                     required
                   />
                 </Form.Group>
@@ -174,6 +283,7 @@ const Login = () => {
                   <Button  
                     variant="primary" 
                     type="submit"
+                    disabled={loading}
                     style={{ 
                       marginTop: '20px',
                       backgroundColor: 'navy',
@@ -186,7 +296,7 @@ const Login = () => {
                       letterSpacing:'1.5px',
                     }}
                   >
-                    LOGIN
+                    {loading ? 'LOGGING IN...' : 'LOGIN'}
                   </Button>
                 </div>
                 <div className="d-flex justify-content-center">
@@ -204,14 +314,14 @@ const Login = () => {
                       fontWeight:'bold',
                       letterSpacing:'1.5px',
                     }}
-                    disabled={!getRegistrationRoute()}
+                    disabled={!getRegistrationRoute() || loading}
                   >
                     REGISTER
                   </Button>
                 </div>
               </Form>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -219,3 +329,4 @@ const Login = () => {
 };
 
 export default Login;
+
